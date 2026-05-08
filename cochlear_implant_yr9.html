@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cochlear Implant — Year 9 Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1628;--navy2:#0F2040;--blue:#1A6EFF;--blue-l:#E8F1FF;--blue-d:#0047CC;
+  --teal:#00C9A7;--teal-l:#E0FAF5;--teal-d:#007A66;
+  --amber:#FFB300;--amber-l:#FFF8E0;--amber-d:#7A5200;
+  --coral:#FF4757;--coral-l:#FFF0F1;--coral-d:#8B0010;
+  --green:#2ED573;--green-l:#E6FFF2;--green-d:#0A6632;
+  --gray:#F4F6FA;--mid:#8896B0;--text:#1A2340;--muted:#5A6880;
+  --white:#fff;--bdr:#DDE3EF;--r:14px;--sh:0 4px 24px rgba(10,22,40,.10)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Space Grotesk',sans-serif;background:#F0F4FB;color:var(--text);line-height:1.7}
+
+/* HERO */
+.hero{background:var(--navy);color:#fff;padding:0;overflow:hidden;position:relative;min-height:420px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.22}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,40,0.3) 0%,rgba(10,22,40,0.95) 100%)}
+.hero-content{position:relative;z-index:2;padding:3rem 2rem 3rem;max-width:860px;margin:0 auto;width:100%}
+.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(0,201,167,0.2);border:1px solid rgba(0,201,167,0.4);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:1.25rem;font-family:'Space Mono',monospace}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;line-height:1.15;margin-bottom:.75rem;letter-spacing:-.02em}
+.hero h1 span{color:var(--teal)}
+.hero .sub{font-size:1rem;color:rgba(255,255,255,.65);max-width:520px}
+
+/* NAV */
+.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);padding:10px 1.5rem;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.np{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 14px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.6);cursor:pointer;text-decoration:none;transition:all .15s;letter-spacing:.03em}
+.np:hover{background:rgba(0,201,167,.15);color:var(--teal);border-color:rgba(0,201,167,.4)}
+
+/* LEARNING INTENTION */
+.li-box{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:1.75rem;margin-bottom:1.5rem;border:1px solid rgba(26,110,255,.3);position:relative;overflow:hidden}
+.li-box::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(0,201,167,.06)}
+.li-box .li-tag{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-family:'Space Mono',monospace;margin-bottom:.6rem}
+.li-box h2{font-size:1.1rem;font-weight:700;color:#fff;line-height:1.4}
+
+/* SECTIONS */
+.sec{max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.sh .ic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.sh h2{font-size:1.4rem;font-weight:700;color:var(--text)}
+.divider{height:2px;background:linear-gradient(90deg,var(--teal),transparent);border-radius:2px;margin:.25rem 0 1.5rem}
+
+/* CARDS */
+.card{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:1.25rem}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:.75rem;color:var(--text)}
+.card p{color:var(--muted);font-size:.92rem;margin-bottom:.75rem;line-height:1.7}
+.card p:last-child{margin-bottom:0}
+
+/* IMAGES */
+.img-full{width:100%;border-radius:var(--r);display:block;object-fit:cover;box-shadow:var(--sh);margin-bottom:.75rem}
+.img-caption{font-size:.8rem;color:var(--mid);text-align:center;margin-bottom:1.25rem;font-style:italic}
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.img-grid img{width:100%;height:200px;object-fit:cover;border-radius:10px;box-shadow:var(--sh)}
+@media(max-width:560px){.img-grid{grid-template-columns:1fr}}
+
+/* FACT BOX */
+.fact{background:var(--teal-l);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.25rem;border-left:4px solid var(--teal)}
+.fact h4{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-d);margin-bottom:.4rem;font-family:'Space Mono',monospace}
+.fact p{font-size:.92rem;color:var(--teal-d);margin:0}
+
+/* HOW IT WORKS STEPS */
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:1.25rem}
+.step{display:flex;align-items:flex-start;gap:14px;background:var(--white);border-radius:10px;padding:14px;border:1px solid var(--bdr);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;flex-shrink:0;font-family:'Space Mono',monospace}
+.step-text{font-size:.9rem;color:var(--muted);line-height:1.6}
+.step-text strong{color:var(--text)}
+
+/* EAR DIAGRAM LABELS */
+.diagram-wrap{position:relative;margin-bottom:1.25rem}
+.diagram-wrap img{width:100%;border-radius:var(--r);display:block;box-shadow:var(--sh)}
+.diagram-labels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.dlabel{background:var(--navy);color:#fff;border-radius:8px;padding:8px 10px;text-align:center;font-size:.78rem;font-weight:600}
+.dlabel span{display:block;font-size:.68rem;color:rgba(255,255,255,.5);margin-top:2px;font-family:'Space Mono',monospace}
+
+/* VIDEO LINK */
+.vid-box{background:var(--navy);border-radius:var(--r);overflow:hidden;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.08)}
+.vid-link{display:flex;align-items:center;gap:1rem;padding:1.25rem;text-decoration:none;color:#fff;transition:background .15s}
+.vid-link:hover{background:rgba(255,255,255,.05)}
+.vid-thumb{width:100px;height:58px;background:linear-gradient(135deg,var(--teal-d),var(--blue-d));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.vid-info h4{font-size:.9rem;font-weight:700;margin-bottom:.2rem}
+.vid-info p{font-size:.78rem;color:rgba(255,255,255,.5);margin:0}
+.vid-btn{margin-left:auto;background:var(--coral);color:#fff;border-radius:8px;padding:8px 14px;font-size:.78rem;font-weight:700;flex-shrink:0;white-space:nowrap}
+
+/* QUESTIONS */
+.qb{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:1rem}
+.qn{display:inline-block;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:.75rem;letter-spacing:.06em;font-family:'Space Mono',monospace}
+.qt{font-size:.98rem;font-weight:600;margin-bottom:1rem;color:var(--text);line-height:1.5}
+.qt em{color:var(--blue);font-style:normal;font-weight:700}
+
+/* IMAGE QUESTION */
+.img-q-wrap{border-radius:10px;overflow:hidden;border:2px solid var(--bdr);margin-bottom:1rem}
+.img-q-wrap img{width:100%;max-height:280px;object-fit:cover;display:block}
+.img-q-label{background:var(--navy);color:rgba(255,255,255,.7);padding:8px 14px;font-size:.78rem;font-weight:600;font-family:'Space Mono',monospace}
+
+/* MC */
+.mc{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mc li{display:flex;align-items:center;gap:10px;padding:11px 14px;border:2px solid var(--bdr);border-radius:10px;cursor:pointer;transition:all .18s;font-size:.92rem;font-weight:500;color:var(--text);background:var(--gray);user-select:none}
+.mc li:hover{border-color:var(--blue);background:var(--blue-l)}
+.mc li.correct{border-color:var(--green);background:var(--green-l);color:var(--green-d)}
+.mc li.wrong{border-color:var(--coral);background:var(--coral-l);color:var(--coral-d)}
+.ol{width:28px;height:28px;border-radius:50%;background:var(--white);border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'Space Mono',monospace}
+.mc li.correct .ol{background:var(--green);border-color:var(--green);color:#fff}
+.mc li.wrong .ol{background:var(--coral);border-color:var(--coral);color:#fff}
+.fb{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:.88rem;font-weight:600;display:none;line-height:1.5}
+.fb.show{display:block}
+.fb.correct{background:var(--green-l);color:var(--green-d)}
+.fb.wrong{background:var(--coral-l);color:var(--coral-d)}
+
+/* TEXT ANSWERS */
+textarea.sa{width:100%;border:2px solid var(--bdr);border-radius:10px;padding:12px;font-family:'Space Grotesk',sans-serif;font-size:.92rem;color:var(--text);background:var(--gray);resize:vertical;min-height:88px;transition:border-color .18s;line-height:1.6}
+textarea.sa:focus{outline:none;background:#fff;border-color:var(--blue)}
+textarea.ext{min-height:150px}
+.cc{text-align:right;font-size:.75rem;color:var(--mid);margin-top:4px;font-family:'Space Mono',monospace}
+.sbtn{margin-top:10px;color:#fff;border:none;border-radius:10px;padding:10px 22px;font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .18s;letter-spacing:.02em}
+.sbtn:hover{filter:brightness(1.1)}
+.sbtn:active{transform:scale(.97)}
+
+/* DRAG AND DROP */
+.drag-section{background:var(--white);border-radius:var(--r);padding:1.5rem;box-shadow:var(--sh);border:1px solid var(--bdr);margin-bottom:1.25rem}
+.drag-section h3{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.drag-section>p{font-size:.88rem;color:var(--muted);margin-bottom:1rem}
+.drag-bank{display:flex;flex-wrap:wrap;gap:8px;padding:1rem;background:var(--gray);border-radius:10px;border:2px dashed var(--bdr);min-height:60px;margin-bottom:1rem}
+.drag-item{background:var(--white);border:2px solid var(--blue);color:var(--blue-d);border-radius:20px;padding:6px 14px;font-size:.82rem;font-weight:700;cursor:grab;user-select:none;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);font-family:'Space Mono',monospace}
+.drag-item:hover{transform:scale(1.04);box-shadow:0 4px 14px rgba(0,0,0,.13)}
+.drag-item.dragging{opacity:.35}
+.drop-zones{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.drop-zones{grid-template-columns:1fr}}
+.drop-zone{border:2px dashed var(--bdr);border-radius:12px;padding:14px;min-height:110px;background:var(--gray);transition:all .15s}
+.drop-zone.over{border-color:var(--teal);background:var(--teal-l)}
+.dz-label{font-size:.78rem;font-weight:700;text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-family:'Space Mono',monospace}
+.dz-items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.drag-check-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .18s;margin-top:12px}
+.drag-check-btn:hover{background:var(--blue)}
+.drag-reset-btn{background:none;border:2px solid var(--bdr);border-radius:10px;padding:8px 16px;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:700;color:var(--mid);cursor:pointer;margin-left:8px;transition:all .15s}
+.drag-reset-btn:hover{border-color:var(--mid);color:var(--text)}
+.drag-result{margin-top:10px;padding:10px 14px;border-radius:10px;font-size:.9rem;font-weight:700;display:none}
+.drag-result.show{display:block}
+
+/* SCORE / EXIT TICKET */
+.exit-box{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r);padding:2rem;border:1px solid rgba(0,201,167,.2);margin-bottom:1.25rem;color:#fff}
+.exit-box h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;color:var(--teal)}
+.exit-box p{font-size:.9rem;color:rgba(255,255,255,.65);margin-bottom:1.25rem}
+.exit-box textarea.sa{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}
+.exit-box textarea.sa::placeholder{color:rgba(255,255,255,.3)}
+.exit-box textarea.sa:focus{border-color:var(--teal);background:rgba(255,255,255,.12)}
+.traffic{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
+.tl-btn{flex:1;min-width:100px;padding:14px 10px;border:none;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .18s;opacity:.7}
+.tl-btn:hover{opacity:1;transform:scale(1.03)}
+.tl-btn.selected{opacity:1;box-shadow:0 0 0 3px #fff}
+.tl-red{background:#FF4757;color:#fff}
+.tl-amber{background:#FFB300;color:#1A2340}
+.tl-green{background:#2ED573;color:#0A6632}
+
+.sc-box{background:var(--white);border-radius:var(--r);padding:2rem;box-shadow:var(--sh);border:1px solid var(--bdr);text-align:center;margin-bottom:1.25rem}
+.pb-wrap{background:var(--gray);border-radius:20px;padding:4px;border:1px solid var(--bdr);margin:1rem 0 .25rem}
+.pb-fill{height:10px;border-radius:16px;background:linear-gradient(90deg,var(--teal),var(--blue));transition:width .6s;width:0%}
+.pl{text-align:right;font-size:.75rem;color:var(--mid);margin-top:4px;font-family:'Space Mono',monospace}
+
+footer{background:var(--navy);color:rgba(255,255,255,.4);text-align:center;padding:1.5rem;font-size:.8rem;margin-top:3rem;font-family:'Space Mono',monospace}
+footer strong{color:rgba(255,255,255,.8)}
+
+@media(max-width:600px){.hero-content{padding:2rem 1rem 2.5rem}.sec{padding:1.5rem 1rem}.sticky-nav{display:none}.vid-btn{display:none}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1400&q=80&auto=format&fit=crop" alt="Medical science brain neurology" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="tag">⚡ Year 9 Science · Science as Human Endeavour</span>
+    <h1>The <span>Cochlear</span><br>Implant</h1>
+    <p class="sub">How science, society and human need combined to create one of Australia's greatest medical innovations.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <a href="#intention" class="np">🎯 Intention</a>
+  <a href="#hook" class="np">🔊 Hook</a>
+  <a href="#hearing" class="np">👂 Normal Hearing</a>
+  <a href="#what" class="np">🦾 What Is It?</a>
+  <a href="#how" class="np">⚡ How It Works</a>
+  <a href="#drag" class="np">🎮 Activity</a>
+  <a href="#research" class="np">🔬 Research Qs</a>
+  <a href="#exit" class="np">🚪 Exit Ticket</a>
+</nav>
+
+<!-- LEARNING INTENTION -->
+<section class="sec" id="intention">
+  <div class="li-box">
+    <div class="li-tag">🎯 Learning Intention</div>
+    <h2>I can explain what a cochlear implant is, how it works, and how its development is an example of how the values and needs of society can influence the direction of scientific research for the good of humankind.</h2>
+  </div>
+</section>
+
+<!-- HOOK -->
+<section class="sec" id="hook">
+  <div class="sh">
+    <div class="ic" style="background:#0F2040;">🔊</div>
+    <h2>Think About This First</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="fact">
+    <h4>💭 Hook Question</h4>
+    <p>Imagine waking up tomorrow and not being able to hear anything — no music, no voices, no sounds at all. Now imagine a tiny electronic device surgically placed behind your ear could restore your hearing. Would you get the implant? What would matter most to you in making that decision?</p>
+  </div>
+
+  <div class="qb">
+    <span class="qn" style="background:var(--teal-d)">HOOK — YOUR THOUGHTS</span>
+    <p class="qt">Before we start — what do you already know about cochlear implants? Write anything you've heard, seen, or can guess.</p>
+    <textarea class="sa" placeholder="I think a cochlear implant is... I've heard that..." oninput="updateCounter(this,'hook1')"></textarea>
+    <div class="cc" id="hook1">0 characters</div>
+    <button class="sbtn" style="background:var(--teal-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <div class="vid-box">
+    <a href="https://www.youtube.com/watch?v=Htvjo8M7Gog" target="_blank" class="vid-link">
+      <div class="vid-thumb">▶️</div>
+      <div class="vid-info">
+        <h4>From Bionic Ear to World's First Cochlear — Prof. Graeme Clark</h4>
+        <p>YouTube — The inventor tells his story. Watch before answering the research questions.</p>
+      </div>
+      <span class="vid-btn">▶ Watch</span>
+    </a>
+  </div>
+
+  <img class="img-full" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80&auto=format&fit=crop" alt="Medical surgeon in operating theatre" onerror="this.style.display='none'" style="max-height:320px">
+  <p class="img-caption">Cochlear implant surgery is performed under general anaesthetic and takes around 2–3 hours</p>
+</section>
+
+<!-- NORMAL HEARING -->
+<section class="sec" id="hearing">
+  <div class="sh">
+    <div class="ic" style="background:#E1F5EE;">👂</div>
+    <h2>How Normal Hearing Works</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="card">
+    <h3>The Three Parts of the Ear</h3>
+    <p>In normal hearing, sound passes through three parts of the ear before reaching the brain. Each part plays a critical role — if any part fails, hearing is affected.</p>
+  </div>
+
+  <div class="img-grid">
+    <div>
+      <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&q=80&auto=format&fit=crop" alt="Doctor examining ear" onerror="this.style.display='none'" style="width:100%;height:200px;object-fit:cover;border-radius:10px;box-shadow:var(--sh)">
+      <p style="font-size:.78rem;color:var(--mid);text-align:center;margin-top:6px;font-style:italic">An audiologist checking hearing health</p>
+    </div>
+    <div>
+      <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80&auto=format&fit=crop" alt="Neuroscience brain scan" onerror="this.style.display='none'" style="width:100%;height:200px;object-fit:cover;border-radius:10px;box-shadow:var(--sh)">
+      <p style="font-size:.78rem;color:var(--mid);text-align:center;margin-top:6px;font-style:italic">Sound signals are ultimately processed by the brain</p>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Outer Ear</strong> — The visible part of the ear and ear canal. Captures sound vibrations and directs them inward to the middle ear.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Middle Ear</strong> — Contains the eardrum and three tiny bones: the malleus, incus, and stapes. Sound vibrations cause these bones to move.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Inner Ear (Cochlea)</strong> — The snail-shaped cochlea contains thousands of tiny hair cells. These bend when fluid moves and send chemical signals to the auditory nerve.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Auditory Nerve → Brain</strong> — The auditory nerve carries electrical signals to the brain, where they are interpreted as recognisable sounds.</div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <h4>⚠️ What Goes Wrong?</h4>
+    <p>Hair cells in the cochlea can be damaged by ageing, heredity, disease, infection, or loud noise. Damaged hair cells cannot send signals — so the auditory nerve is never stimulated and the person cannot hear. This is called <strong>sensorineural hearing loss</strong>. A hearing aid can amplify sound but cannot fix damaged hair cells. That's where the cochlear implant comes in.</p>
+  </div>
+
+  <!-- IMAGE QUESTION -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue-d)">IMAGE QUESTION 1</span>
+    <div class="img-q-wrap">
+      <img src="https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=900&q=80&auto=format&fit=crop" alt="Sound waves and music" onerror="this.style.display='none'">
+      <div class="img-q-label">📷 Sound waves travel as vibrations through the air</div>
+    </div>
+    <p class="qt">Looking at the image above and using what you've read — trace the journey of a sound wave from outside your ear all the way to your brain. Name each structure it passes through.</p>
+    <textarea class="sa ext" placeholder="A sound wave starts in the air and enters the outer ear... it then travels to..." oninput="updateCounter(this,'iq1')"></textarea>
+    <div class="cc" id="iq1">0 characters</div>
+    <button class="sbtn" style="background:var(--blue-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <!-- MC 1 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue)">QUESTION 1 — MULTIPLE CHOICE</span>
+    <p class="qt">What is the role of the <em>hair cells</em> inside the cochlea?</p>
+    <ul class="mc">
+      <li onclick="checkMC(this,'wrong','Not quite — the eardrum is in the middle ear and amplifies vibrations from outside. Hair cells do something different.','q1')"><span class="ol">A</span> They amplify sound vibrations entering from outside the ear</li>
+      <li onclick="checkMC(this,'correct','✅ Correct! Hair cells bend when the fluid in the cochlea moves and convert that motion into chemical signals sent to the auditory nerve.','q1')"><span class="ol">B</span> They convert fluid movement into chemical signals sent to the auditory nerve</li>
+      <li onclick="checkMC(this,'wrong','The three bones (malleus, incus, stapes) in the middle ear transmit vibrations — not the hair cells.','q1')"><span class="ol">C</span> They transmit vibrations between the three tiny bones in the middle ear</li>
+      <li onclick="checkMC(this,'wrong','The auditory nerve carries signals to the brain — hair cells send signals TO the nerve, not to the brain directly.','q1')"><span class="ol">D</span> They carry electrical signals directly to the brain</li>
+    </ul>
+    <div class="fb" id="q1-fb"></div>
+  </div>
+
+  <!-- MC 2 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue)">QUESTION 2 — MULTIPLE CHOICE</span>
+    <p class="qt">Why can't a standard hearing aid fix sensorineural hearing loss?</p>
+    <ul class="mc">
+      <li onclick="checkMC(this,'wrong','Hearing aids are actually quite small and modern ones are barely visible.','q2')"><span class="ol">A</span> Hearing aids are too large to fit inside the ear</li>
+      <li onclick="checkMC(this,'wrong','Hearing aids do work with the eardrum — they amplify sound so it reaches the middle ear more strongly.','q2')"><span class="ol">B</span> Hearing aids cannot work with a damaged eardrum</li>
+      <li onclick="checkMC(this,'correct','✅ Correct! Hearing aids just make sounds louder, but if the hair cells that detect those sounds are damaged, amplifying the sound still won\'t help — there\'s nothing to detect it.','q2')"><span class="ol">C</span> Hearing aids only amplify sound — they can't help if the hair cells that detect sound are damaged</li>
+      <li onclick="checkMC(this,'wrong','Hearing aids don\'t need to connect to nerves — they work in the outer/middle ear.','q2')"><span class="ol">D</span> Hearing aids are unable to connect to the auditory nerve</li>
+    </ul>
+    <div class="fb" id="q2-fb"></div>
+  </div>
+</section>
+
+<!-- WHAT IS A COCHLEAR IMPLANT -->
+<section class="sec" id="what">
+  <div class="sh">
+    <div class="ic" style="background:#0F2040;">🦾</div>
+    <h2>What Is a Cochlear Implant?</h2>
+  </div>
+  <div class="divider"></div>
+
+  <img class="img-full" src="https://images.unsplash.com/photo-1614728263952-84ea256f9d1d?w=1200&q=80&auto=format&fit=crop" alt="Medical technology electronics" onerror="this.style.display='none'" style="max-height:300px">
+  <p class="img-caption">Modern cochlear implants combine miniaturised electronics with precise surgical techniques</p>
+
+  <div class="card">
+    <h3>The Two Main Parts</h3>
+    <p>A cochlear implant has two main components that must work together. One is implanted surgically inside the skull; the other is worn externally like a hearing aid.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+    <div style="background:var(--navy);border-radius:var(--r);padding:1.25rem;color:#fff;border:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.6rem;font-family:'Space Mono',monospace">Internal (inside skull)</div>
+      <div style="font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.7">
+        <div style="margin-bottom:6px">📡 <strong style="color:#fff">Receiver-stimulator</strong> — controls electrical pulses</div>
+        <div style="margin-bottom:6px">📶 <strong style="color:#fff">Antenna</strong> — receives signals from processor</div>
+        <div style="margin-bottom:6px">🧲 <strong style="color:#fff">Magnet</strong> — holds external part in place</div>
+        <div>🧵 <strong style="color:#fff">Electrode wire</strong> — inserted into cochlea to stimulate nerve</div>
+      </div>
+    </div>
+    <div style="background:var(--blue-l);border-radius:var(--r);padding:1.25rem;border:1px solid rgba(26,110,255,.2)">
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-d);margin-bottom:.6rem;font-family:'Space Mono',monospace">External (worn outside)</div>
+      <div style="font-size:.88rem;color:var(--muted);line-height:1.7">
+        <div style="margin-bottom:6px">🎙️ <strong style="color:var(--text)">Microphone</strong> — picks up sound</div>
+        <div style="margin-bottom:6px">💻 <strong style="color:var(--text)">Sound processor</strong> — converts to digital signal</div>
+        <div style="margin-bottom:6px">📡 <strong style="color:var(--text)">Transmitter</strong> — sends signal to implant</div>
+        <div>🧲 <strong style="color:var(--text)">Magnet</strong> — aligns with internal magnet</div>
+      </div>
+    </div>
+  </div>
+  @media(max-width:560px){div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}}
+
+  <div class="img-grid">
+    <div>
+      <img src="https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=600&q=80&auto=format&fit=crop" alt="Medical implant technology" onerror="this.style.display='none'" style="width:100%;height:200px;object-fit:cover;border-radius:10px;box-shadow:var(--sh)">
+      <p style="font-size:.78rem;color:var(--mid);text-align:center;margin-top:6px;font-style:italic">The external processor is worn behind the ear</p>
+    </div>
+    <div>
+      <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f3?w=600&q=80&auto=format&fit=crop" alt="Neuroscience technology" onerror="this.style.display='none'" style="width:100%;height:200px;object-fit:cover;border-radius:10px;box-shadow:var(--sh)">
+      <p style="font-size:.78rem;color:var(--mid);text-align:center;margin-top:6px;font-style:italic">Electrodes inserted into the cochlea replace damaged hair cells</p>
+    </div>
+  </div>
+
+  <!-- IMAGE QUESTION 2 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--navy)">IMAGE QUESTION 2</span>
+    <div class="img-q-wrap">
+      <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=900&q=80&auto=format&fit=crop" alt="Medical neuroscience brain technology" onerror="this.style.display='none'">
+      <div class="img-q-label">📷 Advanced medical devices increasingly interface directly with the human nervous system</div>
+    </div>
+    <p class="qt">The cochlear implant bypasses damaged hair cells entirely. Using the image as a prompt — explain in your own words WHY bypassing the hair cells allows a person to hear, when the hair cells themselves cannot be repaired.</p>
+    <textarea class="sa ext" placeholder="The cochlear implant bypasses the hair cells by... This works because..." oninput="updateCounter(this,'iq2')"></textarea>
+    <div class="cc" id="iq2">0 characters</div>
+    <button class="sbtn" style="background:var(--navy)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <!-- MC 3 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue)">QUESTION 3 — MULTIPLE CHOICE</span>
+    <p class="qt">Why is the magnet in a cochlear implant important?</p>
+    <ul class="mc">
+      <li onclick="checkMC(this,'wrong','The magnet doesn\'t power the device — the processor is battery powered.','q3')"><span class="ol">A</span> It powers the electrical signals sent to the cochlea</li>
+      <li onclick="checkMC(this,'correct','✅ Correct! Both the internal implant and external processor have magnets. When they align, the two parts are held securely together and can communicate. If they\'re not aligned, the device doesn\'t work.','q3')"><span class="ol">B</span> It aligns and holds the internal and external components together so they can communicate</li>
+      <li onclick="checkMC(this,'wrong','The electrode wire is what stimulates the auditory nerve — not the magnet.','q3')"><span class="ol">C</span> It stimulates the auditory nerve directly</li>
+      <li onclick="checkMC(this,'wrong','The antenna, not the magnet, is responsible for receiving wireless signals from the external processor.','q3')"><span class="ol">D</span> It receives wireless signals from the sound processor</li>
+    </ul>
+    <div class="fb" id="q3-fb"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how">
+  <div class="sh">
+    <div class="ic" style="background:#FAEEDA;">⚡</div>
+    <h2>How the Cochlear Implant Works</h2>
+  </div>
+  <div class="divider" style="background:linear-gradient(90deg,var(--amber),transparent)"></div>
+
+  <div class="card">
+    <h3>Step by Step — From Sound to Brain</h3>
+    <p>The cochlear implant follows a precise sequence of steps to convert sound in the environment into an electrical signal the brain can interpret. Each step must work correctly for the person to hear.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">1</div><div class="step-text"><strong>Microphone picks up sound</strong> from the environment around the person.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">2</div><div class="step-text"><strong>Sound is sent to the speech processor</strong>, a minicomputer worn externally.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">3</div><div class="step-text"><strong>Processor converts sound into a digital electrical signal</strong> — determining how much current will be sent to the electrodes.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">4</div><div class="step-text"><strong>Transmitter sends the signal</strong> wirelessly to the internal implant package via the aligned magnets.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">5</div><div class="step-text"><strong>Implant decodes the signal</strong> and determines how much electric current to send to each electrode. More current = louder sound. Electrode position = pitch.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">6</div><div class="step-text"><strong>Electrodes stimulate the auditory nerve</strong> directly — bypassing the damaged hair cells entirely.</div></div>
+    <div class="step"><div class="step-num" style="background:var(--teal-d)">7</div><div class="step-text"><strong>Auditory nerve sends signals to the brain</strong>, which interprets them as recognisable sounds.</div></div>
+  </div>
+
+  <div class="fact">
+    <h4>🧠 Fascinating Fact</h4>
+    <p>Cochlear implants don't restore natural hearing — the sound quality is different and takes months of therapy to learn. Most infants, even those who have never heard before, can develop speech and language after receiving an implant. The brain is remarkably adaptable.</p>
+  </div>
+
+  <!-- IMAGE QUESTION 3 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--amber-d)">IMAGE QUESTION 3</span>
+    <div class="img-q-wrap">
+      <img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=900&q=80&auto=format&fit=crop" alt="Child learning to hear" onerror="this.style.display='none'">
+      <div class="img-q-label">📷 A child learning to hear through a cochlear implant for the first time</div>
+    </div>
+    <p class="qt">Looking at this image — cochlear implants don't restore 'normal' hearing and require months of learning. Why do you think this might be? What does it tell us about how hearing and the brain work together?</p>
+    <textarea class="sa ext" placeholder="I think cochlear implants require learning because... This tells us that the brain..." oninput="updateCounter(this,'iq3')"></textarea>
+    <div class="cc" id="iq3">0 characters</div>
+    <button class="sbtn" style="background:var(--amber-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <!-- MC 4 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue)">QUESTION 4 — MULTIPLE CHOICE</span>
+    <p class="qt">What determines the <em>loudness</em> of sound perceived through a cochlear implant?</p>
+    <ul class="mc">
+      <li onclick="checkMC(this,'wrong','The position of the electrodes determines pitch (high or low sound), not loudness.','q4')"><span class="ol">A</span> The position of the electrodes inside the cochlea</li>
+      <li onclick="checkMC(this,'correct','✅ Correct! The amount of electric current sent to the electrodes determines loudness — more current means the person perceives a louder sound.','q4')"><span class="ol">B</span> The amount of electric current sent to the electrodes</li>
+      <li onclick="checkMC(this,'wrong','The size of the magnet affects alignment, not the loudness of the perceived sound.','q4')"><span class="ol">C</span> The size of the magnet holding the components together</li>
+      <li onclick="checkMC(this,'wrong','The number of electrodes affects the quality and range of sounds, but loudness is controlled by current.','q4')"><span class="ol">D</span> The number of electrodes inserted into the cochlea</li>
+    </ul>
+    <div class="fb" id="q4-fb"></div>
+  </div>
+
+  <!-- MC 5 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--blue)">QUESTION 5 — MULTIPLE CHOICE</span>
+    <p class="qt">How is the cochlear implant different from a hearing aid in the way it helps a person hear?</p>
+    <ul class="mc">
+      <li onclick="checkMC(this,'wrong','It\'s actually the opposite — cochlear implants require surgery to implant the internal component, making them more invasive than hearing aids.','q5')"><span class="ol">A</span> A cochlear implant is less invasive — it sits entirely outside the body</li>
+      <li onclick="checkMC(this,'wrong','Both devices use the auditory nerve ultimately, but a hearing aid relies on the hair cells to stimulate it naturally.','q5')"><span class="ol">B</span> A hearing aid uses the auditory nerve; a cochlear implant does not</li>
+      <li onclick="checkMC(this,'correct','✅ Correct! A hearing aid makes sounds louder so the (partially working) hair cells can detect them. A cochlear implant bypasses the damaged hair cells entirely by electrically stimulating the auditory nerve directly.','q5')"><span class="ol">C</span> A hearing aid amplifies sound for partially working hair cells; a cochlear implant bypasses damaged hair cells and directly stimulates the auditory nerve</li>
+      <li onclick="checkMC(this,'wrong','Hearing aids are for all levels of hearing loss — cochlear implants are typically for severe or profound hearing loss where aids aren\'t effective.','q5')"><span class="ol">D</span> A cochlear implant is for mild hearing loss; a hearing aid is for severe loss</li>
+    </ul>
+    <div class="fb" id="q5-fb"></div>
+  </div>
+</section>
+
+<!-- DRAG AND DROP -->
+<section class="sec" id="drag">
+  <div class="sh">
+    <div class="ic" style="background:#EEEDFE;">🎮</div>
+    <h2>Sorting Activity: Internal or External?</h2>
+  </div>
+  <div class="divider" style="background:linear-gradient(90deg,var(--purple, #534AB7),transparent)"></div>
+
+  <div class="drag-section">
+    <h3>Drag each component into the correct category</h3>
+    <p>Sort the parts of a cochlear implant — which are implanted inside the body, and which are worn on the outside?</p>
+
+    <div class="drag-bank" id="drag-bank">
+      <div class="drag-item" draggable="true" data-answer="internal" data-id="recv">Receiver-stimulator</div>
+      <div class="drag-item" draggable="true" data-answer="external" data-id="mic">Microphone</div>
+      <div class="drag-item" draggable="true" data-answer="internal" data-id="elec">Electrode wire</div>
+      <div class="drag-item" draggable="true" data-answer="external" data-id="proc">Sound processor</div>
+      <div class="drag-item" draggable="true" data-answer="internal" data-id="ant">Antenna (internal)</div>
+      <div class="drag-item" draggable="true" data-answer="external" data-id="trans">Transmitter</div>
+      <div class="drag-item" draggable="true" data-answer="internal" data-id="imag">Internal magnet</div>
+      <div class="drag-item" draggable="true" data-answer="external" data-id="emag">External magnet</div>
+    </div>
+
+    <div class="drop-zones">
+      <div class="drop-zone" id="zone-internal" data-zone="internal">
+        <div class="dz-label" style="color:var(--teal-d)">🦾 Internal (inside skull)</div>
+        <div class="dz-items" id="items-internal"></div>
+      </div>
+      <div class="drop-zone" id="zone-external" data-zone="external">
+        <div class="dz-label" style="color:var(--blue-d)">📱 External (worn outside)</div>
+        <div class="dz-items" id="items-external"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px">
+      <button class="drag-check-btn" onclick="checkDrag()">Check my answers ✓</button>
+      <button class="drag-reset-btn" onclick="resetDrag()">↺ Reset</button>
+    </div>
+    <div class="drag-result" id="drag-result"></div>
+  </div>
+</section>
+
+<!-- RESEARCH QUESTIONS -->
+<section class="sec" id="research">
+  <div class="sh">
+    <div class="ic" style="background:#FAECE7;">🔬</div>
+    <h2>Research &amp; Analysis Questions</h2>
+  </div>
+  <div class="divider" style="background:linear-gradient(90deg,var(--coral),transparent)"></div>
+
+  <div class="fact" style="background:var(--coral-l);border-color:var(--coral)">
+    <h4 style="color:var(--coral-d)">📋 Before you answer</h4>
+    <p style="color:var(--coral-d)">Use the reading, the YouTube video (Prof. Graeme Clark), and your own research to answer these questions. Explain your answers clearly — don't just write a series of unjustified statements!</p>
+  </div>
+
+  <!-- IMAGE QUESTION 4 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--coral-d)">IMAGE QUESTION 4</span>
+    <div class="img-q-wrap">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80&auto=format&fit=crop" alt="Australian scientist researcher" onerror="this.style.display='none'">
+      <div class="img-q-label">📷 Graeme Clark developed the cochlear implant at the University of Melbourne in the 1970s–80s</div>
+    </div>
+    <p class="qt">Research Question 1: The cochlear implant is often called an "Aussie invention." Is this accurate? Why or why not? Use evidence from the video and your own research.</p>
+    <textarea class="sa ext" placeholder="The cochlear implant is / is not entirely an 'Aussie invention' because... Graeme Clark's contribution was... However..." oninput="updateCounter(this,'rq1')"></textarea>
+    <div class="cc" id="rq1">0 characters</div>
+    <button class="sbtn" style="background:var(--coral-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <div class="qb">
+    <span class="qn" style="background:var(--coral-d)">RESEARCH QUESTION 2</span>
+    <p class="qt">How has the development of the cochlear implant changed society? Think about: individuals, families, education, the economy, and scientific progress.</p>
+    <textarea class="sa ext" placeholder="The cochlear implant has changed society in several ways... For individuals... For families... For education..." oninput="updateCounter(this,'rq2')"></textarea>
+    <div class="cc" id="rq2">0 characters</div>
+    <button class="sbtn" style="background:var(--coral-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <!-- IMAGE QUESTION 5 -->
+  <div class="qb">
+    <span class="qn" style="background:var(--coral-d)">IMAGE QUESTION 5</span>
+    <div class="img-q-wrap">
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80&auto=format&fit=crop" alt="Deaf community people signing" onerror="this.style.display='none'">
+      <div class="img-q-label">📷 Deaf culture and sign language are central to many people's identity — some view cochlear implants as a threat to this community</div>
+    </div>
+    <p class="qt">Research Question 3: Some people in the Deaf community object to cochlear implants. Using the image as a prompt — do some research and explain WHY some people object. What do you think? Give a reasoned view.</p>
+    <textarea class="sa ext" style="min-height:180px" placeholder="Some people object to cochlear implants because... The Deaf community argues that... In my view..." oninput="updateCounter(this,'rq3')"></textarea>
+    <div class="cc" id="rq3">0 characters</div>
+    <button class="sbtn" style="background:var(--coral-d)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+
+  <div class="qb">
+    <span class="qn" style="background:var(--coral-d)">EXTENSION QUESTION</span>
+    <p class="qt">The cochlear implant is described as an example of how "the values and needs of society can influence the direction of scientific research for the good of humankind." What does this mean? Do you agree that it applies to the cochlear implant?</p>
+    <textarea class="sa ext" placeholder="This statement means that... The cochlear implant is an example of this because... I agree / disagree that it is 'for the good of humankind' because..." oninput="updateCounter(this,'ext1')"></textarea>
+    <div class="cc" id="ext1">0 characters</div>
+    <button class="sbtn" style="background:var(--navy)" onclick="saveAnswer(this)">Save ✓</button>
+  </div>
+</section>
+
+<!-- EXIT TICKET -->
+<section class="sec" id="exit">
+  <div class="sh">
+    <div class="ic" style="background:#0F2040;">🚪</div>
+    <h2>Exit Ticket</h2>
+  </div>
+  <div class="divider"></div>
+
+  <div class="exit-box">
+    <h3>🚦 Before you go — check your understanding</h3>
+    <p>Answer these three quick questions honestly. This helps your teacher know what to revisit next lesson.</p>
+
+    <p style="font-size:.85rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:.5rem">How confident are you with today's content?</p>
+    <div class="traffic">
+      <button class="tl-btn tl-red" onclick="selectTraffic(this)">🔴 Still confused — I need more help</button>
+      <button class="tl-btn tl-amber" onclick="selectTraffic(this)">🟡 Getting there — a bit unsure</button>
+      <button class="tl-btn tl-green" onclick="selectTraffic(this)">🟢 Got it — I understand this well</button>
+    </div>
+
+    <p style="font-size:.88rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:.5rem;margin-top:1rem">Exit Q1: In ONE sentence, explain what a cochlear implant is and what it does.</p>
+    <textarea class="sa" style="min-height:70px" placeholder="A cochlear implant is..." oninput="updateCounter(this,'et1')"></textarea>
+    <div class="cc" id="et1" style="color:rgba(255,255,255,.4)">0 characters</div>
+
+    <p style="font-size:.88rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:.5rem;margin-top:1rem">Exit Q2: What is ONE thing you learned today that surprised you?</p>
+    <textarea class="sa" style="min-height:70px" placeholder="Something that surprised me was..." oninput="updateCounter(this,'et2')"></textarea>
+    <div class="cc" id="et2" style="color:rgba(255,255,255,.4)">0 characters</div>
+
+    <p style="font-size:.88rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:.5rem;margin-top:1rem">Exit Q3: What is ONE question you still have — something you're still unsure about or want to know more about?</p>
+    <textarea class="sa" style="min-height:70px" placeholder="I'm still wondering..." oninput="updateCounter(this,'et3')"></textarea>
+    <div class="cc" id="et3" style="color:rgba(255,255,255,.4)">0 characters</div>
+
+    <button class="sbtn" style="background:var(--teal-d);margin-top:1rem;font-size:1rem;padding:12px 28px" onclick="saveAnswer(this)">Submit Exit Ticket ✓</button>
+  </div>
+
+  <!-- SCORE + DOWNLOAD -->
+  <div class="sc-box">
+    <div style="font-size:2.5rem;margin-bottom:.5rem">🎉</div>
+    <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:.5rem">Lesson Complete!</h3>
+    <p style="font-size:.9rem;color:var(--muted)">Multiple Choice Score: <strong id="correct-count">0</strong> / <strong id="mc-total">5</strong></p>
+    <div class="pb-wrap"><div class="pb-fill" id="final-bar"></div></div>
+    <div class="pl" id="final-pct">0%</div>
+
+    <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--bdr)">
+      <p style="font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:.75rem">📄 Download your answers</p>
+      <p style="font-size:.82rem;color:var(--mid);margin-bottom:1rem">Enter your name and class, then download your responses to submit to your teacher.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">
+        <input type="text" id="sname" placeholder="Your name..." style="padding:10px 14px;border:2px solid var(--bdr);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;width:200px;color:var(--text)">
+        <input type="text" id="scls" placeholder="Class (e.g. 9B)..." style="padding:10px 14px;border:2px solid var(--bdr);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:.9rem;width:150px;color:var(--text)">
+      </div>
+      <button onclick="downloadAnswers()" style="background:var(--navy);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em">⬇️ Download My Answers</button>
+      <p style="margin-top:.75rem;font-size:.78rem;color:var(--mid);font-family:'Space Mono',monospace">Saves to Downloads folder → submit to teacher on Daymap</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>The Cochlear Implant · Year 9 Science · Science as Human Endeavour</strong><br>
+  Australian Curriculum v9 · Based on BDA Cochlear Implant Reading Task
+</footer>
+
+<script>
+// MC
+var mcAnswered={},correctCount=0;
+function checkMC(el,msg,qid){
+  // Detect correct/wrong from msg
+  var isCorrect = msg.startsWith('✅');
+  if(mcAnswered[qid])return;
+  mcAnswered[qid]=true;
+  var block=el.closest('.qb');
+  block.querySelectorAll('.mc li').forEach(function(o){o.style.pointerEvents='none'});
+  var fb=block.querySelector('.fb');
+  if(isCorrect){
+    el.classList.add('correct');
+    fb.className='fb show correct';
+    correctCount++;
+    updateScore();
+  } else {
+    el.classList.add('wrong');
+    fb.className='fb show wrong';
+    block.querySelectorAll('.mc li').forEach(function(o){
+      if(o.getAttribute('onclick')&&o.getAttribute('onclick').indexOf("'correct'")!==-1)o.classList.add('correct');
+    });
+  }
+  fb.textContent=msg;
+}
+
+// Fix: rewrite checkMC calls to use result param
+// Override with cleaner version
+var mcAnswered2={},correctCount2=0;
+document.addEventListener('DOMContentLoaded',function(){
+  // patch all mc li onclick to use data attributes
+  document.querySelectorAll('.mc li').forEach(function(li){
+    var orig=li.getAttribute('onclick')||'';
+    // already wired above
+  });
+  updateScore();
+});
+
+function updateScore(){
+  var mc=document.querySelectorAll('.mc').length;
+  var el=document.getElementById('correct-count');
+  var mt=document.getElementById('mc-total');
+  var pe=document.getElementById('final-pct');
+  var fb=document.getElementById('final-bar');
+  if(el)el.textContent=correctCount;
+  if(mt)mt.textContent=mc;
+  var pct=mc>0?Math.round((correctCount/mc)*100):0;
+  if(pe)pe.textContent=pct+'%';
+  if(fb)fb.style.width=pct+'%';
+}
+
+function updateCounter(ta,id){
+  var el=document.getElementById(id);
+  if(el)el.textContent=ta.value.length+' characters';
+}
+
+function saveAnswer(btn){
+  btn.textContent='✓ Saved!';
+  btn.style.background='#0a6632';
+  btn.disabled=true;
+}
+
+function selectTraffic(btn){
+  document.querySelectorAll('.tl-btn').forEach(function(b){b.classList.remove('selected')});
+  btn.classList.add('selected');
+}
+
+// DRAG AND DROP
+var draggedItem=null;
+document.querySelectorAll('.drag-item').forEach(function(item){
+  item.addEventListener('dragstart',function(){
+    draggedItem=this;
+    setTimeout(function(){item.classList.add('dragging')},0);
+  });
+  item.addEventListener('dragend',function(){
+    draggedItem=null;
+    item.classList.remove('dragging');
+  });
+});
+
+document.querySelectorAll('.drop-zone').forEach(function(zone){
+  zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('over')});
+  zone.addEventListener('dragleave',function(){zone.classList.remove('over')});
+  zone.addEventListener('drop',function(e){
+    e.preventDefault();zone.classList.remove('over');
+    if(draggedItem){
+      var clone=draggedItem.cloneNode(true);
+      clone.classList.remove('dragging');
+      clone.style.cursor='default';
+      clone.setAttribute('draggable','false');
+      clone.style.fontSize='.75rem';
+      zone.querySelector('.dz-items').appendChild(clone);
+      draggedItem.parentNode.removeChild(draggedItem);
+      draggedItem=null;
+    }
+  });
+});
+
+var bank=document.getElementById('drag-bank');
+bank.addEventListener('dragover',function(e){e.preventDefault()});
+bank.addEventListener('drop',function(e){e.preventDefault();if(draggedItem){bank.appendChild(draggedItem);draggedItem=null;}});
+
+function checkDrag(){
+  var correct=0,total=0;
+  ['internal','external'].forEach(function(z){
+    document.getElementById('items-'+z).querySelectorAll('.drag-item').forEach(function(item){
+      total++;
+      if(item.dataset.answer===z){
+        correct++;
+        item.style.borderColor='var(--green)';item.style.background='var(--green-l)';item.style.color='var(--green-d)';
+      } else {
+        item.style.borderColor='var(--coral)';item.style.background='var(--coral-l)';item.style.color='var(--coral-d)';
+      }
+    });
+  });
+  var res=document.getElementById('drag-result');
+  res.className='drag-result show';
+  if(total<8){
+    res.style.background='var(--amber-l)';res.style.color='var(--amber-d)';
+    res.textContent='⚠️ '+(8-total)+' items still in the bank — place all items first!';
+  } else if(correct===8){
+    res.style.background='var(--green-l)';res.style.color='var(--green-d)';
+    res.textContent='🎉 Perfect! All 8 components sorted correctly!';
+  } else {
+    res.style.background='var(--coral-l)';res.style.color='var(--coral-d)';
+    res.textContent='You got '+correct+'/8 correct. Red items are in the wrong category — reset and try again!';
+  }
+}
+
+function resetDrag(){
+  var allItems=[
+    {id:'recv',answer:'internal',label:'Receiver-stimulator'},
+    {id:'mic',answer:'external',label:'Microphone'},
+    {id:'elec',answer:'internal',label:'Electrode wire'},
+    {id:'proc',answer:'external',label:'Sound processor'},
+    {id:'ant',answer:'internal',label:'Antenna (internal)'},
+    {id:'trans',answer:'external',label:'Transmitter'},
+    {id:'imag',answer:'internal',label:'Internal magnet'},
+    {id:'emag',answer:'external',label:'External magnet'},
+  ];
+  var bank=document.getElementById('drag-bank');
+  bank.innerHTML='';
+  allItems.forEach(function(info){
+    var el=document.createElement('div');
+    el.className='drag-item';el.draggable=true;
+    el.dataset.answer=info.answer;el.dataset.id=info.id;
+    el.textContent=info.label;el.style='';
+    el.addEventListener('dragstart',function(){draggedItem=this;setTimeout(function(){el.classList.add('dragging')},0)});
+    el.addEventListener('dragend',function(){draggedItem=null;el.classList.remove('dragging')});
+    bank.appendChild(el);
+  });
+  ['internal','external'].forEach(function(z){document.getElementById('items-'+z).innerHTML=''});
+  var res=document.getElementById('drag-result');res.className='drag-result';res.textContent='';
+}
+
+function downloadAnswers(){
+  var name=document.getElementById('sname').value.trim()||'Student';
+  var cls=document.getElementById('scls').value.trim()||'';
+  var date=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  var traffic=document.querySelector('.tl-btn.selected');
+  var lines=[
+    '============================================================',
+    'YEAR 9 SCIENCE — THE COCHLEAR IMPLANT',
+    'Science as Human Endeavour',
+    'Student: '+name+(cls?' | Class: '+cls:''),
+    'Date: '+date,
+    'MC Score: '+correctCount+'/'+document.querySelectorAll('.mc').length,
+    'Confidence: '+(traffic?traffic.textContent.trim():'not selected'),
+    '============================================================',''
+  ];
+  var wc=0;
+  document.querySelectorAll('.qb').forEach(function(block){
+    var qn=block.querySelector('.qn');
+    var qt=block.querySelector('.qt');
+    var ta=block.querySelector('textarea');
+    var mc=block.querySelector('.mc li.correct,.mc li.wrong');
+    var lbl=(qn?qn.textContent:'')+' — '+(qt?qt.textContent.substring(0,70)+'...':'');
+    if(ta){wc++;lines.push('---');lines.push('Q'+wc+': '+lbl);lines.push(ta.value.trim()||'(no response)');lines.push('');}
+    if(mc){lines.push('MC: '+lbl);lines.push('Selected: '+mc.textContent.trim().replace(/^[A-D]\s*/,'')+' ('+(mc.classList.contains('correct')?'Correct':'Incorrect')+')');lines.push('');}
+  });
+  // Exit ticket textareas outside qb
+  document.querySelectorAll('.exit-box textarea').forEach(function(ta,i){
+    if(ta.value.trim()){lines.push('Exit Q'+(i+1)+': '+ta.value.trim());lines.push('');}
+  });
+  // Drag results
+  var dragSummary=[];
+  ['internal','external'].forEach(function(z){
+    var items=Array.from(document.getElementById('items-'+z).querySelectorAll('.drag-item')).map(function(i){return i.textContent.trim()});
+    if(items.length)dragSummary.push(z.toUpperCase()+': '+items.join(', '));
+  });
+  if(dragSummary.length){lines.push('---');lines.push('DRAG & DROP RESULTS:');dragSummary.forEach(function(s){lines.push(s)});lines.push('');}
+  lines.push('============================================================');
+  var blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='CochlearImplant_'+name.replace(/[^a-zA-Z0-9]/g,'_')+(cls?'_'+cls.replace(/[^a-zA-Z0-9]/g,''):'')+'.txt';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+updateScore();
+</script>
+</body>
+</html>
