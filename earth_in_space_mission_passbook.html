@@ -856,18 +856,12 @@ function missionBody(m){
     <p class="hint">Prediction locked in? Then your mission is GO. Here's your briefing:</p>
     <div class="spotlight" style="margin-bottom:16px">
       <b>🚀 Mission briefing:</b>
-      <span style="display:block;margin-top:6px">1️⃣ Listen to your teacher's instructions and safety briefing.<br>
-      2️⃣ Carry out the investigation with your group — look closely, measure carefully, and ask "what do I notice?"<br>
-      3️⃣ Record everything below — observations, measurements, sketches (draw those in your book).<br>
-      4️⃣ If your teacher directs you to research, use only the approved class resources.</span>
+      <span style="display:block;margin-top:6px">1️⃣ Listen to your teacher's instructions for today's mission.<br>
+      2️⃣ Explore the approved resources — websites, videos and books — with your group.<br>
+      3️⃣ Hunt for evidence: facts, diagrams and explanations that help answer the mission question.<br>
+      4️⃣ As you go, capture your <b>three strongest pieces of evidence</b> below — in your own words, not copied.</span>
     </div>
-    <div class="cer-label">My investigation notes — what did I see, measure or find out?</div>
-    ${field(m,'obs','textarea',{ph:'I noticed that… When we tried… I measured…', tall:true})}
-  </div>
-
-  <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>Evidence Collected 🔍</h2></div>
-    <p class="hint">Now look back at your investigation notes — choose your three most important pieces of evidence.</p>
+    <div class="cer-label">Evidence collected 🔍</div>
     <div class="ev-row"><span class="n">1.</span>${field(m,'ev1','input',{ph:'First piece of evidence…'})}</div>
     <div class="ev-row"><span class="n">2.</span>${field(m,'ev2','input',{ph:'Second piece of evidence…'})}</div>
     <div class="ev-row"><span class="n">3.</span>${field(m,'ev3','input',{ph:'Third piece of evidence…'})}</div>
@@ -1081,7 +1075,6 @@ $('downloadBtn').onclick = ()=>{
       F(m.id,'tc3','The strongest evidence that changed my thinking');
     } else {
       F(m.id,'before','Before We Investigate (prediction)');
-      F(m.id,'obs','Investigation notes');
       F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
       F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
       L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
