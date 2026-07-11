@@ -873,6 +873,14 @@ function missionBody(m){
     <div class="ev-row"><span class="n">3.</span>${field(m,'ev3','input',{ph:'Third piece of evidence…'})}</div>
   </div>
 
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>My Research Links 🔗</h2></div>
+    <p class="hint">Found a video or website that helps explain the idea? Paste the links here so you (and your teacher) can find them again. Add a few words about what each one explains.</p>
+    <div class="ev-row"><span class="n">1.</span>${field(m,'link1','input',{ph:'Paste link — and what does it explain?'})}</div>
+    <div class="ev-row"><span class="n">2.</span>${field(m,'link2','input',{ph:'Paste link — and what does it explain?'})}</div>
+    <div class="ev-row"><span class="n">3.</span>${field(m,'link3','input',{ph:'Paste link — and what does it explain?'})}</div>
+  </div>
+
   ${scienceBlock(m, s++)}
 
   <div class="step">
@@ -1054,6 +1062,7 @@ $('downloadBtn').onclick = ()=>{
       F(m.id,'before','Before We Investigate (prediction)');
       F(m.id,'obs','Investigation notes');
       F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
+      F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
       L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
       F(m.id,'claim','CLAIM'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
       F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
