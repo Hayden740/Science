@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth in Space — Mission Passbook | Year 7 Science</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
+
+:root{
+  --teal:#013148;
+  --teal-deep:#001d2b;
+  --lime:#BDD675;
+  --coral:#F46E63;
+  --pink:#F38C9F;
+  --sky:#C0E7F8;
+  --sage:#7AC698;
+  --paper:#FDFCF7;
+  --ink:#0e2733;
+  --muted:#5b7482;
+  --card:#ffffff;
+  --radius:18px;
+  --shadow:0 6px 24px rgba(1,49,72,.10);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+h1,h2,h3,.fredoka{font-family:'Fredoka',sans-serif}
+
+/* ============ SPACE HERO ============ */
+.hero{
+  position:relative;
+  background:linear-gradient(180deg,var(--teal-deep) 0%,var(--teal) 75%);
+  color:#fff;
+  padding:52px 20px 130px;
+  overflow:hidden;
+  text-align:center;
+}
+.stars,.stars2{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 68%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 44% 12%, var(--sky) 50%, transparent 51%),
+    radial-gradient(1px 1px at 61% 45%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 76% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 62%, var(--lime) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 8% 82%, var(--sky) 50%, transparent 51%),
+    radial-gradient(1px 1px at 52% 86%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 94% 34%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 36% 40%, var(--pink) 50%, transparent 51%);
+  animation:twinkle 4s ease-in-out infinite alternate;
+}
+.stars2{
+  background-image:
+    radial-gradient(1px 1px at 18% 48%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 66% 74%, var(--sky) 50%, transparent 51%),
+    radial-gradient(1px 1px at 82% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 5% 55%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 48% 62%, var(--lime) 50%, transparent 51%),
+    radial-gradient(1px 1px at 72% 38%, #fff 50%, transparent 51%);
+  animation-delay:2s;
+}
+@keyframes twinkle{from{opacity:.45}to{opacity:1}}
+
+.orbit-wrap{
+  width:150px;height:150px;margin:0 auto 18px;position:relative;
+}
+.earth{
+  width:84px;height:84px;border-radius:50%;
+  position:absolute;top:33px;left:33px;
+  background:radial-gradient(circle at 32% 30%, #6fc3e8 0 28%, #2a89b8 60%, #0e4f74 100%);
+  box-shadow:0 0 34px rgba(192,231,248,.5), inset -12px -10px 22px rgba(0,20,35,.55);
+}
+.earth::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(ellipse 26px 15px at 30% 38%, var(--sage) 55%, transparent 60%),
+    radial-gradient(ellipse 18px 11px at 66% 60%, var(--lime) 55%, transparent 60%),
+    radial-gradient(ellipse 13px 8px at 55% 24%, var(--sage) 55%, transparent 60%);
+  opacity:.9;
+}
+.moon-orbit{
+  position:absolute;inset:0;border:1.5px dashed rgba(255,255,255,.28);border-radius:50%;
+  animation:spin 14s linear infinite;
+}
+.moon{
+  width:24px;height:24px;border-radius:50%;
+  background:radial-gradient(circle at 35% 32%, #f5f2e8 0 45%, #b9b4a5 100%);
+  position:absolute;top:-12px;left:calc(50% - 12px);
+  box-shadow:inset -4px -3px 7px rgba(60,60,60,.5);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){
+  .moon-orbit,.stars,.stars2{animation:none}
+}
+
+.hero .eyebrow{
+  display:inline-block;background:var(--lime);color:var(--teal);
+  font-family:'Fredoka';font-weight:600;font-size:.85rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:5px 16px;border-radius:999px;margin-bottom:14px;
+}
+.hero h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:700;letter-spacing:.01em}
+.hero p.sub{color:var(--sky);font-size:1.1rem;max-width:560px;margin:10px auto 0}
+
+.team-box{
+  margin:26px auto 0;max-width:420px;position:relative;z-index:2;
+}
+.team-box label{
+  display:block;font-family:'Fredoka';font-weight:500;font-size:.95rem;
+  color:var(--sky);margin-bottom:6px;letter-spacing:.05em;
+}
+.team-box input{
+  width:100%;padding:13px 18px;border-radius:14px;border:2px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.12);color:#fff;font-family:'Fredoka';font-size:1.05rem;
+  text-align:center;outline:none;transition:border-color .2s;
+}
+.team-box input::placeholder{color:rgba(255,255,255,.55)}
+.team-box input:focus{border-color:var(--lime)}
+
+/* ============ BADGE TRACKER ============ */
+.badge-tray{
+  max-width:860px;margin:-88px auto 0;position:relative;z-index:3;
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:22px 24px 18px;
+}
+.badge-tray h2{
+  text-align:center;color:var(--teal);font-size:1.15rem;font-weight:600;margin-bottom:4px;
+}
+.badge-tray p{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:16px}
+.badges{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.badge{
+  width:92px;text-align:center;
+}
+.badge .medal{
+  width:64px;height:64px;margin:0 auto 6px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+  background:#eef2ef;border:3px dashed #c8d4cd;filter:grayscale(1);opacity:.55;
+  transition:all .35s ease;
+}
+.badge.earned .medal{
+  filter:none;opacity:1;border:3px solid var(--bcol,var(--lime));
+  background:color-mix(in srgb, var(--bcol,var(--lime)) 22%, #fff);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--bcol,var(--lime)) 28%, transparent);
+  animation:pop .5s ease;
+}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.badge .bname{font-size:.72rem;font-weight:700;color:var(--muted);line-height:1.25;display:block}
+.badge.earned .bname{color:var(--teal)}
+.progressbar{
+  margin:18px auto 2px;max-width:420px;height:12px;background:#e8efe9;border-radius:999px;overflow:hidden;
+}
+.progressbar > div{
+  height:100%;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,var(--sage),var(--lime));
+  transition:width .6s ease;
+}
+.progress-label{text-align:center;font-size:.82rem;color:var(--muted);margin-top:6px}
+
+/* ============ MISSION GRID ============ */
+.wrap{max-width:960px;margin:0 auto;padding:34px 20px 70px}
+.section-title{
+  color:var(--teal);font-size:1.5rem;font-weight:600;margin:26px 0 6px;text-align:center;
+}
+.section-sub{text-align:center;color:var(--muted);margin-bottom:24px}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;
+}
+.mcard{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:22px;border-top:8px solid var(--acc);cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;position:relative;
+  text-align:left;border-left:none;border-right:none;border-bottom:none;
+  font:inherit;color:inherit;width:100%;
+}
+.mcard:hover,.mcard:focus-visible{transform:translateY(-4px);box-shadow:0 12px 30px rgba(1,49,72,.16);outline:none}
+.mcard:focus-visible{box-shadow:0 0 0 3px var(--acc), 0 12px 30px rgba(1,49,72,.16)}
+.mcard .icon{font-size:2.1rem}
+.mcard .mnum{
+  font-family:'Fredoka';font-weight:600;font-size:.78rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--acc);margin-top:8px;
+}
+.mcard h3{color:var(--teal);font-size:1.18rem;font-weight:600;margin:2px 0 6px}
+.mcard .q{font-size:.92rem;color:var(--muted);font-style:italic}
+.mcard .done-tag{
+  position:absolute;top:14px;right:14px;background:var(--sage);color:#fff;
+  font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:999px;display:none;
+}
+.mcard.done .done-tag{display:inline-block}
+
+.toolbar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.btn{
+  font-family:'Fredoka';font-weight:600;font-size:1rem;border:none;cursor:pointer;
+  padding:13px 26px;border-radius:999px;transition:transform .15s, box-shadow .15s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--teal);color:#fff;box-shadow:0 4px 14px rgba(1,49,72,.3)}
+.btn-lime{background:var(--lime);color:var(--teal)}
+.btn-ghost{background:transparent;color:var(--coral);border:2px solid var(--coral)}
+
+/* ============ MISSION VIEW ============ */
+#missionView{display:none}
+.mission-hero{
+  background:linear-gradient(180deg,var(--teal-deep),var(--teal));
+  color:#fff;padding:34px 20px 44px;position:relative;overflow:hidden;
+}
+.mission-hero .inner{max-width:860px;margin:0 auto;position:relative;z-index:2}
+.backbtn{
+  background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);color:#fff;
+  font-family:'Fredoka';font-weight:500;padding:8px 18px;border-radius:999px;cursor:pointer;
+  margin-bottom:18px;font-size:.92rem;
+}
+.backbtn:hover{background:rgba(255,255,255,.25)}
+.mission-hero .tag{
+  display:inline-block;background:var(--macc);color:var(--teal);
+  font-family:'Fredoka';font-weight:600;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 14px;border-radius:999px;margin-bottom:10px;
+}
+.mission-hero h1{font-size:clamp(1.6rem,4.5vw,2.4rem);font-weight:700}
+.mission-hero .mq{
+  margin-top:14px;background:rgba(255,255,255,.1);border-left:6px solid var(--macc);
+  padding:14px 18px;border-radius:0 12px 12px 0;max-width:620px;
+}
+.mission-hero .mq b{color:var(--macc);font-family:'Fredoka';font-weight:600;display:block;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.mission-hero .mq span{font-size:1.15rem;font-style:italic}
+
+.mbody{max-width:860px;margin:0 auto;padding:30px 20px 80px}
+.step{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:26px;margin-bottom:22px;border-top:6px solid var(--macc);
+}
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.step-head .snum{
+  min-width:38px;height:38px;border-radius:50%;background:var(--macc);color:var(--teal);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka';font-weight:700;font-size:1.05rem;
+}
+.step-head h2{color:var(--teal);font-size:1.28rem;font-weight:600}
+.step p.hint{color:var(--muted);font-size:.93rem;margin-bottom:14px}
+textarea,input.line{
+  width:100%;border:2px solid #dbe6e0;border-radius:12px;padding:12px 14px;
+  font-family:'Nunito';font-size:1rem;color:var(--ink);background:#fbfdfa;
+  outline:none;resize:vertical;transition:border-color .2s;
+}
+textarea:focus,input.line:focus{border-color:var(--macc)}
+textarea{min-height:96px}
+textarea.tall{min-height:130px}
+.ev-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.ev-row .n{
+  font-family:'Fredoka';font-weight:700;color:var(--macc);font-size:1.1rem;min-width:22px;padding-top:10px;
+}
+.choices{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice label{
+  display:inline-block;padding:10px 18px;border-radius:999px;border:2px solid #dbe6e0;
+  font-weight:700;font-size:.95rem;cursor:pointer;background:#fbfdfa;transition:all .18s;
+}
+.choice input:checked + label{
+  background:var(--macc);border-color:var(--macc);color:var(--teal);
+}
+.choice input:focus-visible + label{box-shadow:0 0 0 3px color-mix(in srgb,var(--macc) 55%, transparent)}
+.cer-label{
+  font-family:'Fredoka';font-weight:600;color:var(--teal);margin:16px 0 4px;font-size:1rem;
+}
+.cer-label span{color:var(--macc)}
+.video-frame{
+  position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  box-shadow:0 8px 24px rgba(1,49,72,.2);background:#000;
+}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.spotlight{
+  background:color-mix(in srgb, var(--macc) 14%, #fff);
+  border-radius:12px;padding:14px 16px;font-size:.93rem;margin-bottom:14px;
+  border-left:5px solid var(--macc);
+}
+.spotlight b{font-family:'Fredoka';font-weight:600;color:var(--teal)}
+.wallgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:8px}
+.wall-item{position:relative}
+.wall-item input{position:absolute;opacity:0;pointer-events:none}
+.wall-item label{
+  display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:12px;
+  border:2px solid #dbe6e0;background:#fbfdfa;font-weight:700;font-size:.92rem;cursor:pointer;
+  transition:all .18s;
+}
+.wall-item label::before{
+  content:'';width:20px;height:20px;border-radius:6px;border:2.5px solid #b9c9c0;flex:0 0 auto;
+  background:#fff;transition:all .15s;
+}
+.wall-item input:checked + label{border-color:var(--macc);background:color-mix(in srgb,var(--macc) 16%, #fff)}
+.wall-item input:checked + label::before{
+  background:var(--macc);border-color:var(--macc);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23013148' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12l5 5L20 6'/%3E%3C/svg%3E");
+  background-size:14px;background-position:center;background-repeat:no-repeat;
+}
+.wall-item input:focus-visible + label{box-shadow:0 0 0 3px color-mix(in srgb,var(--macc) 55%, transparent)}
+
+.evtable{width:100%;border-collapse:collapse;margin-top:10px}
+.evtable th{
+  font-family:'Fredoka';font-weight:600;color:#fff;background:var(--teal);
+  padding:10px 14px;text-align:left;font-size:.92rem;
+}
+.evtable th:first-child{border-radius:10px 0 0 0}
+.evtable th:last-child{border-radius:0 10px 0 0}
+.evtable td{border:1.5px solid #dbe6e0;padding:8px;vertical-align:top}
+.evtable td.mn{
+  font-weight:800;color:var(--teal);white-space:nowrap;background:#f2f7f3;padding:12px 14px;
+}
+.evtable textarea{min-height:56px;border:none;background:transparent;padding:4px 6px}
+
+.finish-bar{text-align:center;margin-top:8px}
+.finish-bar .note{font-size:.85rem;color:var(--muted);margin-top:10px}
+.saved-flash{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--teal);color:#fff;font-family:'Fredoka';font-weight:500;
+  padding:11px 24px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.25);
+  transition:transform .35s ease;z-index:50;font-size:.95rem;
+}
+.saved-flash.show{transform:translateX(-50%) translateY(0)}
+
+/* celebration overlay */
+#celebrate{
+  position:fixed;inset:0;background:rgba(1,29,43,.86);display:none;
+  align-items:center;justify-content:center;z-index:100;padding:20px;
+}
+#celebrate.show{display:flex}
+.cel-card{
+  background:#fff;border-radius:24px;padding:44px 36px;text-align:center;max-width:430px;
+  animation:pop .5s ease;
+}
+.cel-card .big{font-size:4rem;margin-bottom:8px}
+.cel-card h2{color:var(--teal);font-size:1.7rem;font-weight:700;margin-bottom:6px}
+.cel-card p{color:var(--muted);margin-bottom:22px}
+footer{
+  background:var(--teal);color:var(--sky);text-align:center;padding:26px 20px;font-size:.88rem;
+}
+footer b{color:var(--lime);font-family:'Fredoka';font-weight:500}
+@media(max-width:560px){
+  .badge{width:74px}
+  .badge .medal{width:54px;height:54px;font-size:1.4rem}
+  .step{padding:20px 16px}
+}
+@media print{
+  .hero,.badge-tray,.toolbar,footer,.backbtn,.video-frame,.finish-bar{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HOME VIEW ================= -->
+<div id="homeView">
+  <div class="hero">
+    <div class="stars"></div><div class="stars2"></div>
+    <div class="orbit-wrap">
+      <div class="earth"></div>
+      <div class="moon-orbit"><div class="moon"></div></div>
+    </div>
+    <span class="eyebrow">Year 7 Science · Earth in Space</span>
+    <h1>🚀 Mission Passbook</h1>
+    <p class="sub">Six missions. One big question: <em>is Earth really special?</em> Collect evidence, think like a scientist, and earn your mission badges.</p>
+    <div class="team-box">
+      <label for="teamName">Team members</label>
+      <input type="text" id="teamName" placeholder="Type your team's names here…">
+    </div>
+  </div>
+
+  <div class="badge-tray">
+    <h2>🎖️ Mission Badges</h2>
+    <p>A badge lights up every time you complete a mission.</p>
+    <div class="badges" id="badgeRow"></div>
+    <div class="progressbar"><div id="progFill"></div></div>
+    <div class="progress-label" id="progLabel">0 of 6 missions complete</div>
+  </div>
+
+  <div class="wrap">
+    <h2 class="section-title">Choose Your Mission</h2>
+    <p class="section-sub">Work through the missions in order — your final mission uses evidence from all of them.</p>
+    <div class="grid" id="missionGrid"></div>
+
+    <div class="toolbar">
+      <button class="btn btn-lime" id="downloadBtn">⬇️ Download my answers (.txt)</button>
+      <button class="btn btn-ghost" id="resetBtn">Start over</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MISSION VIEW ================= -->
+<div id="missionView">
+  <div class="mission-hero">
+    <div class="stars"></div>
+    <div class="inner">
+      <button class="backbtn" onclick="goHome()">← Back to Mission Control</button>
+      <div class="tag" id="mTag"></div>
+      <h1 id="mTitle"></h1>
+      <div class="mq"><b>Mission question</b><span id="mQuestion"></span></div>
+    </div>
+  </div>
+  <div class="mbody" id="mBody"></div>
+</div>
+
+<div class="saved-flash" id="savedFlash">💾 Progress saved</div>
+
+<div id="celebrate">
+  <div class="cel-card">
+    <div class="big" id="celIcon">🎖️</div>
+    <h2 id="celTitle">Mission Complete!</h2>
+    <p id="celText">You've earned a badge.</p>
+    <button class="btn btn-primary" onclick="closeCelebrate()">Back to Mission Control</button>
+  </div>
+</div>
+
+<footer>
+  <b>Earth in Space — Mission Passbook</b><br>
+  Year 7 Science · Australian Curriculum AC9S7U03 · Seaford Secondary College
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const MISSIONS = [
+  {
+    id:1, icon:'🌍', accent:'#BDD675', badge:'Gravity Specialist',
+    title:"Why Don't We Fall Into Space?",
+    question:"What keeps us on Earth's surface?",
+    video:'ljRlB6TuMOU', videoTitle:'Defining Gravity — Crash Course Kids',
+    spotlight:"For thousands of years, people all over the world — including Aboriginal and Torres Strait Islander Peoples, the world's oldest continuing cultures — have carefully observed how objects, water and sky behave. Ask your teacher which vetted resource your class is using for this mission."
+  },
+  {
+    id:2, icon:'🌞', accent:'#F46E63', badge:'Earth Rotation Expert',
+    title:'Why Does the Sun Seem to Move?',
+    question:'What causes day and night?',
+    video:'l64YwNl1wr0', videoTitle:"Earth's Rotation & Revolution — Crash Course Kids",
+    spotlight:"Many First Nations Peoples used the Sun's daily path across the sky to structure time and travel. On the Adelaide Plains, the Kaurna people — on whose Country our school stands — have long read the sky as a seasonal and daily calendar."
+  },
+  {
+    id:3, icon:'🍂', accent:'#C0E7F8', badge:'Seasons Scientist',
+    title:'Why Do We Have Seasons?',
+    question:'Why is it hot in summer and cold in winter?',
+    video:'b25g4nZTHvM', videoTitle:'Seasons and the Sun — Crash Course Kids',
+    spotlight:"The Kaurna seasonal calendar of the Adelaide Plains recognises four seasons linked to observable changes in weather, plants and animals — knowledge built from generations of careful observation of this exact place."
+  },
+  {
+    id:4, icon:'🌙', accent:'#F38C9F', badge:'Moon Investigator',
+    title:'Why Does the Moon Change Shape?',
+    question:'What causes the phases of the Moon?',
+    video:'t6MCtB752AE', videoTitle:'Moon Phases Explained — Science for Kids',
+    spotlight:"The Yolŋu people of north-east Arnhem Land have long tracked the Moon's changing phases and connected them to events on Earth — an example of pattern-seeking that scientists use too."
+  },
+  {
+    id:5, icon:'🌊', accent:'#7AC698', badge:'Ocean Systems Researcher',
+    title:'What Causes the Tides?',
+    question:'Why does the ocean rise and fall each day?',
+    video:'tcGEjzt_4is', videoTitle:'What Causes Tides? — NOAA Ocean Today',
+    spotlight:"Yolŋu knowledge links the Moon and the tides — a connection understood in Arnhem Land long before European scientists explained it. What might careful observation of the sea over many generations reveal?"
+  },
+  {
+    id:6, icon:'🪐', accent:'#BDD675', badge:'Planet Discovery Scientist',
+    title:'Final Mission: Is Earth Really Special?',
+    question:'Why is Earth the only planet we currently know that supports life?',
+    video:null, final:true
+  }
+];
+
+const LS = 'eis_';
+const $ = id => document.getElementById(id);
+
+function store(key,val){ try{ localStorage.setItem(LS+key,val); }catch(e){} }
+function read(key){ try{ return localStorage.getItem(LS+key)||''; }catch(e){ return ''; } }
+
+/* ================= HOME ================= */
+function renderHome(){
+  const bRow = $('badgeRow'); bRow.innerHTML='';
+  const grid = $('missionGrid'); grid.innerHTML='';
+  let done = 0;
+  MISSIONS.forEach(m=>{
+    const earned = read('done'+m.id)==='1';
+    if(earned) done++;
+    const b = document.createElement('div');
+    b.className = 'badge'+(earned?' earned':'');
+    b.style.setProperty('--bcol', m.accent);
+    b.innerHTML = `<div class="medal">${m.icon}</div><span class="bname">${m.badge}</span>`;
+    bRow.appendChild(b);
+
+    const c = document.createElement('button');
+    c.className = 'mcard'+(earned?' done':'');
+    c.style.setProperty('--acc', m.accent);
+    c.innerHTML = `
+      <span class="done-tag">✔ COMPLETE</span>
+      <div class="icon">${m.icon}</div>
+      <div class="mnum">${m.final?'Final Mission':'Mission '+m.id}</div>
+      <h3>${m.title.replace('Final Mission: ','')}</h3>
+      <div class="q">“${m.question}”</div>`;
+    c.onclick = ()=>openMission(m.id);
+    grid.appendChild(c);
+  });
+  $('progFill').style.width = (done/6*100)+'%';
+  $('progLabel').textContent = done+' of 6 missions complete'+(done===6?' — outstanding work, scientist! 🎉':'');
+  $('teamName').value = read('team');
+}
+
+$('teamName').addEventListener('input', e=>{ store('team', e.target.value); });
+
+/* ================= MISSION VIEW ================= */
+let current = null;
+
+function field(m, name, type, opts={}){
+  const key = `m${m.id}_${name}`;
+  const val = read(key).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  if(type==='textarea'){
+    return `<textarea data-key="${key}" class="${opts.tall?'tall':''}" placeholder="${opts.ph||''}">${read(key).replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea>`;
+  }
+  return `<input class="line" data-key="${key}" value="${val}" placeholder="${opts.ph||''}">`;
+}
+
+function radio(m, name, options){
+  const key = `m${m.id}_${name}`;
+  const saved = read(key);
+  return `<div class="choices">`+options.map((o,i)=>`
+    <span class="choice">
+      <input type="radio" id="${key}_${i}" name="${key}" data-key="${key}" value="${o}" ${saved===o?'checked':''}>
+      <label for="${key}_${i}">${o}</label>
+    </span>`).join('')+`</div>`;
+}
+
+function checks(m, name, options){
+  const key = `m${m.id}_${name}`;
+  const saved = read(key).split('|');
+  return `<div class="wallgrid">`+options.map((o,i)=>`
+    <span class="wall-item">
+      <input type="checkbox" id="${key}_${i}" data-groupkey="${key}" value="${o}" ${saved.includes(o)?'checked':''}>
+      <label for="${key}_${i}">${o}</label>
+    </span>`).join('')+`</div>`;
+}
+
+function openMission(id){
+  current = MISSIONS.find(m=>m.id===id);
+  const m = current;
+  document.documentElement.style.setProperty('--macc', m.accent);
+  document.querySelectorAll('.mission-hero, #missionView').forEach(el=>el.style.setProperty('--macc', m.accent));
+  $('mTag').textContent = m.final ? '🪐 Final Mission' : `${m.icon} Mission ${m.id} · ${m.badge}`;
+  $('mTitle').textContent = m.title.replace('Final Mission: ','');
+  $('mQuestion').textContent = '“'+m.question+'”';
+
+  $('mBody').innerHTML = m.final ? finalBody(m) : missionBody(m);
+  bindInputs();
+
+  $('homeView').style.display='none';
+  $('missionView').style.display='block';
+  window.scrollTo({top:0});
+}
+
+function missionBody(m){
+  let s = 1;
+  return `
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Briefing Video 🎬</h2></div>
+    <p class="hint">Watch first — it will give you clues for the whole mission. (${m.videoTitle})</p>
+    <div class="video-frame">
+      <iframe src="https://www.youtube-nocookie.com/embed/${m.video}?rel=0&modestbranding=1" title="${m.videoTitle}" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Before We Investigate 🤔</h2></div>
+    <p class="hint">What do you think the answer is right now? There are no wrong answers here — scientists always start with their current thinking. (You can also draw your idea in your book.)</p>
+    ${field(m,'before','textarea',{ph:'I think… because…', tall:true})}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Evidence Collected 🔍</h2></div>
+    <p class="hint">During your investigation, record three important pieces of evidence.</p>
+    <div class="ev-row"><span class="n">1.</span>${field(m,'ev1','input',{ph:'First piece of evidence…'})}</div>
+    <div class="ev-row"><span class="n">2.</span>${field(m,'ev2','input',{ph:'Second piece of evidence…'})}</div>
+    <div class="ev-row"><span class="n">3.</span>${field(m,'ev3','input',{ph:'Third piece of evidence…'})}</div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Think Like a Scientist 🧪</h2></div>
+    <p class="hint">Which explanation is best supported by your evidence?</p>
+    ${radio(m,'tls',['My original idea',"My partner's idea",'A new explanation'])}
+    <div class="cer-label"><span>CLAIM</span> — What is your answer?</div>
+    ${field(m,'claim','textarea',{ph:'I claim that…'})}
+    <div class="cer-label"><span>EVIDENCE</span> — What evidence supports it?</div>
+    ${field(m,'evidence','textarea',{ph:'My evidence is… (use your three pieces above!)'})}
+    <div class="cer-label"><span>REASONING</span> — Why does the evidence support your claim?</div>
+    ${field(m,'reasoning','textarea',{ph:'This evidence supports my claim because…'})}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Open-mindedness Checkpoint 💡</h2></div>
+    <p class="hint">Scientists change their thinking when evidence provides a better explanation.</p>
+    <div class="cer-label">At first I thought…</div>
+    ${field(m,'om1','textarea',{ph:'At first I thought…'})}
+    <div class="cer-label">The investigation showed…</div>
+    ${field(m,'om2','textarea',{ph:'The investigation showed…'})}
+    <div class="cer-label">Now I think…</div>
+    ${field(m,'om3','textarea',{ph:'Now I think…'})}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Aboriginal and Torres Strait Islander Knowledge 🖤💛❤️</h2></div>
+    <div class="spotlight"><b>Knowledge spotlight:</b> ${m.spotlight}</div>
+    <div class="cer-label">What did you learn about how First Nations Peoples observe or understand this Earth system?</div>
+    ${field(m,'atsi1','textarea',{ph:'I learned that…'})}
+    <div class="cer-label">How is this similar to today's investigation?</div>
+    ${field(m,'atsi2','textarea',{ph:'This is similar because…'})}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Evidence Wall 🧱</h2></div>
+    <p class="hint">What evidence will your group add to the class Evidence Wall today? Tick all that apply, then write your evidence card.</p>
+    ${checks(m,'wall',['Graph','Model','Photograph','Diagram','Observation','Data','Scientific explanation'])}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Complete 🏁</h2></div>
+    <p class="hint">Today's biggest discovery was… / A question I still have is…</p>
+    ${field(m,'reflect','textarea',{ph:'My biggest discovery today was… A question I still have is…', tall:true})}
+    <div class="finish-bar">
+      <button class="btn btn-primary" onclick="completeMission()">🎖️ Complete Mission ${m.id}</button>
+      <div class="note">Everything you type is saved automatically on this device.</div>
+    </div>
+  </div>`;
+}
+
+function finalBody(m){
+  const rows = ['Gravity','Day & Night','Seasons','Moon Phases','Tides'];
+  let s=1;
+  return `
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Challenge 🏆</h2></div>
+    <p class="hint">Use evidence from <b>every</b> mission to answer: <em>“Why is Earth the only planet we currently know that supports life?”</em> Do the Evidence Wall gallery walk first, then build your answer here.</p>
+    <div class="cer-label">My Scientific Claim</div>
+    ${field(m,'claim','textarea',{ph:'I claim that Earth is special because…', tall:true})}
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>My Strongest Evidence 💪</h2></div>
+    <p class="hint">From the Evidence Wall, record the strongest piece of evidence for each mission — it doesn't have to be your own group's.</p>
+    <table class="evtable">
+      <tr><th>Mission</th><th>Best Evidence</th></tr>
+      ${rows.map((r,i)=>`<tr><td class="mn">${r}</td><td>${field(m,'best'+i,'textarea',{ph:'The strongest evidence for '+r+' was…'})}</td></tr>`).join('')}
+    </table>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>How My Thinking Changed 💡</h2></div>
+    <p class="hint">Open-mindedness — the scientist's superpower.</p>
+    <div class="cer-label">At the beginning of the unit I thought…</div>
+    ${field(m,'tc1','textarea',{ph:'At the beginning of the unit I thought…'})}
+    <div class="cer-label">Now I understand…</div>
+    ${field(m,'tc2','textarea',{ph:'Now I understand…'})}
+    <div class="cer-label">The strongest evidence that changed my thinking was…</div>
+    ${field(m,'tc3','textarea',{ph:'The strongest evidence that changed my thinking was…'})}
+    <div class="finish-bar">
+      <button class="btn btn-primary" onclick="completeMission()">🪐 Complete the Final Mission</button>
+      <div class="note">Everything you type is saved automatically on this device.</div>
+    </div>
+  </div>`;
+}
+
+/* ================= SAVE / EVENTS ================= */
+let flashTimer=null;
+function flashSaved(){
+  const f=$('savedFlash'); f.classList.add('show');
+  clearTimeout(flashTimer);
+  flashTimer=setTimeout(()=>f.classList.remove('show'),1300);
+}
+
+function bindInputs(){
+  document.querySelectorAll('#mBody [data-key]').forEach(el=>{
+    const ev = el.type==='radio' ? 'change' : 'input';
+    el.addEventListener(ev, ()=>{ store(el.dataset.key, el.type==='radio'?el.value:el.value); flashSaved(); });
+  });
+  document.querySelectorAll('#mBody [data-groupkey]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      const key = el.dataset.groupkey;
+      const vals = [...document.querySelectorAll(`[data-groupkey="${key}"]`)]
+        .filter(c=>c.checked).map(c=>c.value);
+      store(key, vals.join('|')); flashSaved();
+    });
+  });
+}
+
+function completeMission(){
+  store('done'+current.id,'1');
+  $('celIcon').textContent = current.icon;
+  $('celTitle').textContent = current.final ? 'Unit Complete! 🎉' : 'Mission '+current.id+' Complete!';
+  $('celText').textContent = 'You\'ve earned the '+current.badge+' badge!';
+  $('celebrate').classList.add('show');
+}
+function closeCelebrate(){
+  $('celebrate').classList.remove('show');
+  goHome();
+}
+function goHome(){
+  $('missionView').style.display='none';
+  $('homeView').style.display='block';
+  renderHome();
+  window.scrollTo({top:0});
+}
+
+/* ================= RESET & DOWNLOAD ================= */
+$('resetBtn').onclick = ()=>{
+  if(confirm('This will erase ALL your saved answers and badges on this device. Are you sure?')){
+    Object.keys(localStorage).filter(k=>k.startsWith(LS)).forEach(k=>localStorage.removeItem(k));
+    renderHome();
+  }
+};
+
+$('downloadBtn').onclick = ()=>{
+  const L = [];
+  L.push('EARTH IN SPACE — MISSION PASSBOOK (Year 7 Science)');
+  L.push('Team: '+(read('team')||'(not entered)'));
+  L.push('Date: '+new Date().toLocaleDateString('en-AU'));
+  L.push('='.repeat(60));
+  const F = (id,name,label)=>{
+    const v = read(`m${id}_${name}`);
+    L.push('\n'+label+':'); L.push(v ? v : '(blank)');
+  };
+  MISSIONS.forEach(m=>{
+    L.push('\n\n'+'#'.repeat(60));
+    L.push((m.final?'FINAL MISSION':'MISSION '+m.id)+': '+m.title.replace('Final Mission: ',''));
+    L.push('Mission question: '+m.question);
+    L.push('Badge: '+m.badge+'  |  Status: '+(read('done'+m.id)==='1'?'COMPLETE ✔':'in progress'));
+    L.push('#'.repeat(60));
+    if(m.final){
+      F(m.id,'claim','My Scientific Claim');
+      ['Gravity','Day & Night','Seasons','Moon Phases','Tides'].forEach((r,i)=>F(m.id,'best'+i,'Strongest evidence — '+r));
+      F(m.id,'tc1','At the beginning of the unit I thought');
+      F(m.id,'tc2','Now I understand');
+      F(m.id,'tc3','The strongest evidence that changed my thinking');
+    } else {
+      F(m.id,'before','Before We Investigate');
+      F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
+      L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
+      F(m.id,'claim','CLAIM'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
+      F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
+      F(m.id,'atsi1','First Nations knowledge — what I learned');
+      F(m.id,'atsi2','How this is similar to today\'s investigation');
+      L.push('\nEvidence Wall contribution: '+(read(`m${m.id}_wall`).split('|').filter(Boolean).join(', ')||'(none ticked)'));
+      F(m.id,'reflect','Mission reflection');
+    }
+  });
+  const blob = new Blob([L.join('\n')],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const team = (read('team')||'my').trim().split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g,'')||'my';
+  a.download = 'earth_in_space_passbook_'+team+'.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+renderHome();
+</script>
+</body>
+</html>
