@@ -884,21 +884,26 @@ function missionBody(m){
   ${scienceBlock(m, s++)}
 
   <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>In My Own Words ✍️</h2></div>
-    <p class="hint">Summarise what you found out — from your investigation AND the reading — in your own words. Pasting is switched off in this box, because the words have to come from your brain, not your clipboard! 🧠</p>
-    ${field(m,'summary','textarea',{ph:'What I found out is… The most important idea is…', tall:true, nopaste:true})}
-  </div>
-
-  <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Think Like a Scientist 🧪</h2></div>
     <p class="hint">Now that you've investigated and read the science — which explanation is best supported by the evidence?</p>
     ${radio(m,'tls',['My original idea',"My partner's idea",'A new explanation'])}
-    <div class="cer-label"><span>CLAIM</span> — What is your answer to the mission question?</div>
-    ${field(m,'claim','textarea',{ph:'I claim that…'})}
-    <div class="cer-label"><span>EVIDENCE</span> — What evidence supports it?</div>
-    ${field(m,'evidence','textarea',{ph:'My evidence is… (use your three pieces above!)'})}
-    <div class="cer-label"><span>REASONING</span> — Why does the evidence support your claim?</div>
-    ${field(m,'reasoning','textarea',{ph:'This evidence supports my claim because…'})}
+
+    <div class="spotlight" style="margin-top:20px">
+      <b>✍️ Your turn to write it up — in your OWN words.</b>
+      <span style="display:block;margin-top:6px">A scientific answer has three parts that fit together: <b>C</b>laim → <b>E</b>vidence → <b>R</b>easoning. Here's what a CER looks like for a totally different question — <i>"Why is the school oval muddy this morning?"</i></span>
+      <span style="display:block;margin-top:8px">
+      <b>CLAIM:</b> I claim it rained overnight.<br>
+      <b>EVIDENCE:</b> The oval is muddy, there are puddles on the courts, and the seats are wet.<br>
+      <b>REASONING:</b> Rain leaves water behind on surfaces. Puddles, mud and wet seats all show water fell from above recently, so rain is the best explanation for what I observed.</span>
+      <span style="display:block;margin-top:8px">Now do the same for YOUR mission question. Pasting is switched off in these boxes — the words come from your brain, not your clipboard! 🧠</span>
+    </div>
+
+    <div class="cer-label"><span>CLAIM</span> — One clear sentence that answers the mission question. (No "because" yet — that comes later!)</div>
+    ${field(m,'claim','textarea',{ph:'I claim that…', nopaste:true})}
+    <div class="cer-label"><span>EVIDENCE</span> — The facts: what did you actually see, measure or find in your investigation? Use your three pieces of evidence from above.</div>
+    ${field(m,'evidence','textarea',{ph:'My evidence is… First,… Second,… Third,…', nopaste:true})}
+    <div class="cer-label"><span>REASONING</span> — The science: HOW does your evidence prove your claim? Connect them using an idea from the reading.</div>
+    ${field(m,'reasoning','textarea',{ph:'This evidence supports my claim because… The science behind this is…', nopaste:true})}
   </div>
 
   <div class="step">
@@ -1079,9 +1084,8 @@ $('downloadBtn').onclick = ()=>{
       F(m.id,'obs','Investigation notes');
       F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
       F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
-      F(m.id,'summary','In my own words (summary — paste disabled)');
       L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
-      F(m.id,'claim','CLAIM'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
+      F(m.id,'claim','CLAIM (own words — paste disabled)'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
       F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
       F(m.id,'atsi1','First Nations knowledge — what I learned');
       F(m.id,'atsi2','How this is similar to today\'s investigation');
