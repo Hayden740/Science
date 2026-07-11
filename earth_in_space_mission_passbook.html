@@ -732,7 +732,7 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function field(m, name, type, opts={}){
   const key = `m${m.id}_${name}`;
   if(type==='textarea'){
-    return `<textarea data-key="${key}" class="${opts.tall?'tall':''}" placeholder="${opts.ph||''}">${esc(read(key))}</textarea>`;
+    return `<textarea data-key="${key}" class="${opts.tall?'tall':''}${opts.nopaste?' nopaste':''}" placeholder="${opts.ph||''}">${esc(read(key))}</textarea>`;
   }
   return `<input class="line" data-key="${key}" value="${esc(read(key)).replace(/"/g,'&quot;')}" placeholder="${opts.ph||''}">`;
 }
@@ -884,6 +884,12 @@ function missionBody(m){
   ${scienceBlock(m, s++)}
 
   <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>In My Own Words ✍️</h2></div>
+    <p class="hint">Summarise what you found out — from your investigation AND the reading — in your own words. Pasting is switched off in this box, because the words have to come from your brain, not your clipboard! 🧠</p>
+    ${field(m,'summary','textarea',{ph:'What I found out is… The most important idea is…', tall:true, nopaste:true})}
+  </div>
+
+  <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Think Like a Scientist 🧪</h2></div>
     <p class="hint">Now that you've investigated and read the science — which explanation is best supported by the evidence?</p>
     ${radio(m,'tls',['My original idea',"My partner's idea",'A new explanation'])}
@@ -996,6 +1002,16 @@ function bindInputs(){
     const ev = el.type==='radio' ? 'change' : 'input';
     el.addEventListener(ev, ()=>{ store(el.dataset.key, el.value); flashSaved(); });
   });
+  document.querySelectorAll('#mBody textarea.nopaste').forEach(el=>{
+    ['paste','drop'].forEach(evt=>el.addEventListener(evt, e=>{
+      e.preventDefault();
+      const f=$('savedFlash');
+      f.textContent='✍️ In your own words — pasting is off here!';
+      f.classList.add('show');
+      clearTimeout(flashTimer);
+      flashTimer=setTimeout(()=>{f.classList.remove('show');setTimeout(()=>f.textContent='💾 Progress saved',400);},1800);
+    }));
+  });
   document.querySelectorAll('#mBody [data-groupkey]').forEach(el=>{
     el.addEventListener('change', ()=>{
       const key = el.dataset.groupkey;
@@ -1063,6 +1079,7 @@ $('downloadBtn').onclick = ()=>{
       F(m.id,'obs','Investigation notes');
       F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
       F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
+      F(m.id,'summary','In my own words (summary — paste disabled)');
       L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
       F(m.id,'claim','CLAIM'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
       F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
