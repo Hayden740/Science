@@ -787,18 +787,24 @@ function checks(m, name, options){
     </span>`).join('')+`</div>`;
 }
 
+const PASS = {1:'gravity', 2:'rotation', 3:'seasons', 4:'moon', 5:'tides', 6:'earth'};
+
 function scienceBlock(m, stepNum){
   const revealed = read(`m${m.id}_revealed`)==='1';
   const inner = revealed ? scienceContent(m) : `
     <div class="locked-science">
       <div class="lock">🔒</div>
-      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence and make your CER claim first — real scientists commit to an answer <i>before</i> checking it against the textbook.</p>
-      <button class="btn btn-primary" onclick="revealScience()">🔓 My claim is locked in — reveal the science</button>
+      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence and make your CER claim first. When your claim is locked in, ask your teacher for today's <b>mission passcode</b>.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
+        <input class="line" id="passInput" style="max-width:230px;text-align:center" placeholder="Mission passcode…" onkeydown="if(event.key==='Enter')revealScience()">
+        <button class="btn btn-primary" onclick="revealScience()">🔓 Unlock the science</button>
+      </div>
+      <div id="passErr" style="color:var(--coral);font-weight:800;margin-top:12px;display:none">❌ Not quite — check the passcode with your teacher!</div>
     </div>`;
   return `
   <div class="step" id="scienceStep">
-    <div class="step-head"><div class="snum">${stepNum}</div><h2>The Science 📖</h2></div>
-    ${revealed?'':'<p class="hint">This section stays locked until you\'re ready — no spoilers.</p>'}
+    <div class="step-head"><div class="snum">${stepNum}</div><h2>${m.final?'Putting It All Together 📖':'The Science 📖'}</h2></div>
+    ${revealed?'':'<p class="hint">This section stays locked until your teacher gives you the passcode — no spoilers.</p>'}
     <div id="scienceInner">${inner}</div>
   </div>`;
 }
@@ -821,6 +827,12 @@ function scienceContent(m){
 }
 
 function revealScience(){
+  const entered = ($('passInput')?.value||'').trim().toLowerCase();
+  if(entered !== PASS[current.id]){
+    const e = $('passErr');
+    if(e){ e.style.display='block'; }
+    return;
+  }
   store(`m${current.id}_revealed`,'1');
   $('scienceInner').innerHTML = scienceContent(current);
   restoreQuiz(current);
@@ -964,6 +976,7 @@ function missionBody(m){
     ${field(m,'reflect','textarea',{ph:'My biggest discovery today was… A question I still have is…', tall:true})}
     <div class="finish-bar">
       <button class="btn btn-primary" onclick="completeMission()">🎖️ Complete Mission ${m.id}</button>
+      <button class="btn btn-lime" onclick="downloadMissionDoc()">⬇️ Download my Mission ${m.id} report (Word)</button>
       <div class="note">Everything you type is saved automatically on this device.</div>
     </div>
   </div>`;
@@ -973,20 +986,7 @@ function finalBody(m){
   const rows = ['Gravity','Day & Night','Seasons','Moon Phases','Tides'];
   let s=1;
   return `
-  <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>Putting It All Together 📖</h2></div>
-    <div class="keywords">${m.keywords.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
-    <div class="reading">${m.reading.map(p=>`<p>${p}</p>`).join('')}</div>
-    <div class="diagram">${SVGS[m.diagram]}<div class="cap">${m.caption}</div></div>
-    <div class="cer-label" style="margin-top:22px">✅ Quick check</div>
-    ${m.quiz.map((q,qi)=>`
-      <div class="quiz-q">
-        <div class="qq">${qi+1}. ${q.q}</div>
-        <div class="quiz-opts">${q.o.map((o,oi)=>`
-          <button class="qopt" data-mid="${m.id}" data-q="${qi}" data-o="${oi}" onclick="answerQuiz(this)">${o}</button>`).join('')}
-        </div>
-      </div>`).join('')}
-  </div>
+  ${scienceBlock(m, s++)}
 
   <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Mission Challenge 🏆</h2></div>
@@ -1015,6 +1015,7 @@ function finalBody(m){
     ${field(m,'tc3','textarea',{ph:'The strongest evidence that changed my thinking was…'})}
     <div class="finish-bar">
       <button class="btn btn-primary" onclick="completeMission()">🪐 Complete the Final Mission</button>
+      <button class="btn btn-lime" onclick="downloadMissionDoc()">⬇️ Download my Final Mission report (Word)</button>
       <div class="note">Everything you type is saved automatically on this device.</div>
     </div>
   </div>`;
@@ -1126,6 +1127,76 @@ $('downloadBtn').onclick = ()=>{
   a.click();
   URL.revokeObjectURL(a.href);
 };
+
+/* ================= PER-MISSION WORD REPORT ================= */
+function downloadMissionDoc(){
+  const m = current;
+  const w = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+  const A = name => { const v = read(`m${m.id}_${name}`); return v ? w(v) : '<span class="blank">(not answered)</span>'; };
+  const sec = (label, outline, ansHtml) =>
+    `<h3>${label}</h3><p class="o">${outline}</p><div class="a">${ansHtml}</div>`;
+
+  let body = '';
+  if(!m.final){
+    body += sec('Before We Investigate', 'My prediction, written before the mission began.', A('before'));
+    body += sec('Evidence Collected', 'The three strongest pieces of evidence I found while investigating.',
+      `<ol><li>${A('ev1')}</li><li>${A('ev2')}</li><li>${A('ev3')}</li></ol>`);
+    body += sec('My Research Links', 'Videos and websites I used during my research.',
+      `<ol><li>${A('link1')}</li><li>${A('link2')}</li><li>${A('link3')}</li></ol>`);
+    body += sec('Best-Supported Explanation', 'The explanation my evidence best supports.',
+      w(read(`m${m.id}_tls`)) || '<span class="blank">(not selected)</span>');
+    body += sec('Claim', 'My one-sentence answer to the mission question.', A('claim'));
+    body += sec('Evidence', 'The facts from my investigation that support my claim.', A('evidence'));
+    body += sec('Reasoning', 'The science that connects my evidence to my claim.', A('reasoning'));
+    body += sec('Open-Mindedness: At First I Thought\u2026', 'My thinking at the start.', A('om1'));
+    body += sec('Open-Mindedness: The Science Reading Showed\u2026', 'What the science said, compared with my claim.', A('om2'));
+    body += sec('Open-Mindedness: Now I Think\u2026', 'My thinking after comparing my claim with the science.', A('om3'));
+    body += sec('First Nations Science \u2014 Question 1', w(m.fnsQ1), A('atsi1'));
+    body += sec('First Nations Science \u2014 Question 2', w(m.fnsQ2), A('atsi2'));
+    body += sec('Evidence Wall Contribution', 'The type of evidence my group added to the class Evidence Wall.',
+      w(read(`m${m.id}_wall`).split('|').filter(Boolean).join(', ')) || '<span class="blank">(none ticked)</span>');
+    body += sec('Mission Reflection', 'My biggest discovery, and a question I still have.', A('reflect'));
+  } else {
+    body += sec('My Scientific Claim', 'My answer, using evidence from every mission: why is Earth the only planet we currently know that supports life?', A('claim'));
+    body += '<h3>My Strongest Evidence</h3><p class="o">The strongest evidence for each mission, gathered from the class Evidence Wall.</p>';
+    ['Gravity','Day &amp; Night','Seasons','Moon Phases','Tides'].forEach((r,i)=>{
+      body += `<p class="o" style="margin-bottom:2pt"><b>${r}</b></p><div class="a">${A('best'+i)}</div>`;
+    });
+    body += sec('At the Beginning of the Unit I Thought\u2026', 'My thinking when the unit began.', A('tc1'));
+    body += sec('Now I Understand\u2026', 'My thinking at the end of the unit.', A('tc2'));
+    body += sec('The Strongest Evidence That Changed My Thinking\u2026', 'The evidence that mattered most.', A('tc3'));
+  }
+  const quizDone = m.quiz.filter((q,qi)=>read(`m${m.id}_quiz${qi}`)!=='').length;
+  body += sec('Quick Check Quiz', 'Comprehension questions answered from the science reading.',
+    `${quizDone} of ${m.quiz.length} answered correctly`);
+
+  const title = m.final ? 'Final Mission: Is Earth Really Special?' : `Mission ${m.id}: ${m.title}`;
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head><meta charset="utf-8"><title>${title}</title><style>
+  body{font-family:Calibri,sans-serif;color:#0e2733;font-size:11pt;line-height:1.45;margin:2cm}
+  h1{color:#013148;font-size:20pt;margin:0 0 2pt}
+  h2{color:#5b7482;font-size:11pt;font-weight:normal;font-style:italic;margin:0 0 4pt}
+  .meta{color:#5b7482;font-size:9pt;border-bottom:2pt solid #BDD675;padding-bottom:8pt;margin-bottom:14pt}
+  h3{color:#013148;font-size:12pt;margin:16pt 0 1pt;border-left:4pt solid #BDD675;padding-left:6pt}
+  p.o{color:#5b7482;font-size:9pt;font-style:italic;margin:0 0 4pt;padding-left:8pt}
+  .a{border:1pt solid #dbe6e0;padding:6pt 8pt;margin-left:8pt;background:#fbfdfa}
+  .blank{color:#b0bec5;font-style:italic}
+  ol{margin:2pt 0 2pt 14pt;padding:0}
+</style></head><body>
+  <h1>${title}</h1>
+  <h2>Mission question: &ldquo;${m.question}&rdquo;</h2>
+  <div class="meta"><b>Team:</b> ${w(read('team'))||'(not entered)'} &nbsp;&middot;&nbsp; <b>Date:</b> ${new Date().toLocaleDateString('en-AU')} &nbsp;&middot;&nbsp; Earth in Space &mdash; Year 7 Science &mdash; Seaford Secondary College</div>
+  ${body}
+</body></html>`;
+
+  const blob = new Blob(['\ufeff', html], {type:'application/msword'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const team = (read('team')||'my').trim().split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g,'')||'my';
+  a.download = (m.final?'final_mission':'mission'+m.id)+'_report_'+team+'.doc';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
 renderHome();
 </script>
