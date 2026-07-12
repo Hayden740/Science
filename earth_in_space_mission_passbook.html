@@ -71,12 +71,9 @@ h1,h2,h3,.fredoka{font-family:'Fredoka',sans-serif}
 }
 @keyframes twinkle{from{opacity:.45}to{opacity:1}}
 
-.orbit-wrap{width:170px;height:170px;margin:0 auto 16px;position:relative}
-.hero-orbit{transform-origin:85px 85px;animation:spin 16s linear infinite}
-.hero-moon{transform-origin:85px 7px;animation:spin 16s linear infinite reverse}
-@keyframes spin{to{transform:rotate(360deg)}}
+
 @media (prefers-reduced-motion: reduce){
-  .hero-orbit,.hero-moon,.stars,.stars2{animation:none}
+  .stars,.stars2{animation:none}
 }
 
 .hero .eyebrow{
@@ -314,6 +311,11 @@ textarea.tall{min-height:130px}
 
 .finish-bar{text-align:center;margin-top:8px}
 .finish-bar .note{font-size:.85rem;color:var(--muted);margin-top:10px}
+.video-frame{
+  position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);background:#000;
+}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .saved-flash{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
   background:var(--teal);color:#fff;font-family:'Fredoka';font-weight:500;
@@ -349,37 +351,7 @@ footer b{color:var(--lime);font-family:'Fredoka';font-weight:500}
 <div id="homeView">
   <div class="hero">
     <div class="stars"></div><div class="stars2"></div>
-    <div class="orbit-wrap">
-      <svg viewBox="0 0 170 170" width="170" height="170" aria-hidden="true">
-        <defs>
-          <radialGradient id="heroE" cx="35%" cy="30%" r="75%">
-            <stop offset="0%" stop-color="#a8e0f5"/><stop offset="45%" stop-color="#4aa3cd"/><stop offset="100%" stop-color="#0d4a6e"/>
-          </radialGradient>
-          <radialGradient id="heroM" cx="35%" cy="32%" r="75%">
-            <stop offset="0%" stop-color="#fbf8ee"/><stop offset="70%" stop-color="#e8e2cf"/><stop offset="100%" stop-color="#a9a495"/>
-          </radialGradient>
-          <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="60%" stop-color="rgba(192,231,248,0)"/><stop offset="85%" stop-color="rgba(192,231,248,.28)"/><stop offset="100%" stop-color="rgba(192,231,248,0)"/>
-          </radialGradient>
-        </defs>
-        <circle cx="85" cy="85" r="62" fill="url(#heroGlow)"/>
-        <circle cx="85" cy="85" r="78" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="4 6"/>
-        <circle cx="85" cy="85" r="42" fill="url(#heroE)"/>
-        <g opacity=".95">
-          <path d="M 62 72 q 12 -12 26 -5 q 12 6 4 15 q -10 9 -22 4 q -12 -5 -8 -14 Z" fill="#7AC698"/>
-          <path d="M 92 100 q 12 -5 18 3 q 2 10 -9 12 q -12 1 -12 -8 Z" fill="#BDD675"/>
-          <ellipse cx="68" cy="106" rx="9" ry="5" fill="#7AC698"/>
-        </g>
-        <circle cx="85" cy="85" r="42" fill="none" stroke="rgba(1,29,43,.55)" stroke-width="1.5"/>
-        <g class="hero-orbit">
-          <g class="hero-moon">
-            <circle cx="85" cy="7" r="10" fill="url(#heroM)"/>
-            <circle cx="81" cy="4" r="2.4" fill="#c9c3ae"/>
-            <circle cx="89" cy="10" r="1.7" fill="#c9c3ae"/>
-          </g>
-        </g>
-      </svg>
-    </div><div class="stars2"></div>
+    <div class="stars2"></div>
     <div class="orbit-wrap">
       <div class="earth"></div>
       <div class="moon-orbit"><div class="moon"></div></div>
@@ -387,6 +359,9 @@ footer b{color:var(--lime);font-family:'Fredoka';font-weight:500}
     <span class="eyebrow">Year 7 Science · Earth in Space</span>
     <h1>🚀 Mission Passbook</h1>
     <p class="sub">Six missions. One big question: <em>is Earth really special?</em> Predict, investigate, collect evidence, and earn your mission badges.</p>
+    <div class="video-frame" style="max-width:640px;margin:26px auto 0;position:relative;z-index:2">
+      <iframe src="https://www.youtube-nocookie.com/embed/GO5FwsblpT8?rel=0&modestbranding=1" title="Carl Sagan — Pale Blue Dot" allowfullscreen loading="lazy"></iframe>
+    </div>
     <div class="team-box">
       <label for="teamName">Team members</label>
       <input type="text" id="teamName" placeholder="Type your team's names here…">
