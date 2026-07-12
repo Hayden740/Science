@@ -876,6 +876,7 @@ function scienceContent(m){
     <p class="hint" style="margin-bottom:10px">🕵️ As you read, compare each idea with your CER claim. Where do they match? Where do they differ?</p>
     <div class="keywords">${m.keywords.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
     <div class="reading">${m.reading.map(p=>`<p>${p}</p>`).join('')}</div>
+    ${m.final?'<div class="diagram"><img src="images/blue_marble_apollo17.jpg" alt="Earth photographed from space: a full blue disc of ocean, cloud, Africa and Antarctica against black space" style="width:100%;max-width:440px;border-radius:12px"><div class="cap">&ldquo;The Blue Marble&rdquo; &mdash; Earth photographed by the Apollo 17 astronauts, 1972. Every system you investigated is at work in this one photo. (NASA, public domain)</div></div>':''}
     <div class="diagram">${SVGS[m.diagram]}<div class="cap">${m.caption}</div></div>
     ${m.myth?`<div class="mythbust"><b>🚫 Myth-buster:</b> ${m.myth}</div>`:''}
     <div class="cer-label" style="margin-top:22px">✅ Quick check — can you answer these from the reading?</div>
@@ -1052,6 +1053,7 @@ function finalBody(m){
 
   <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Mission Challenge 🏆</h2></div>
+    <div class="diagram"><img src="images/earthrise_apollo8.jpg" alt="Earth rising above the grey lunar horizon, photographed from Apollo 8" style="width:100%;max-width:440px;border-radius:12px"><div class="cap">&ldquo;Earthrise&rdquo; &mdash; Apollo 8, 1968. The first time humans watched their own planet rise over another world. (NASA, public domain)</div></div>
     <p class="hint">Use evidence from <b>every</b> mission to answer: <em>“Why is Earth the only planet we currently know that supports life?”</em> Do the Evidence Wall gallery walk first, then build your answer here.</p>
     <div class="cer-label">My Scientific Claim</div>
     ${field(m,'claim','textarea',{ph:'I claim that Earth is special because…', tall:true})}
