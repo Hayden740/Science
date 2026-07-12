@@ -794,7 +794,7 @@ function scienceBlock(m, stepNum){
   const inner = revealed ? scienceContent(m) : `
     <div class="locked-science">
       <div class="lock">🔒</div>
-      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence and make your CER claim first. When your claim is locked in, ask your teacher for today's <b>mission passcode</b>.</p>
+      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence, make your CER claim and finish your group&#8217;s Evidence Wall card first. When your card is on the wall, ask your teacher for today&#8217;s <b>mission passcode</b>.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
         <input class="line" id="passInput" style="max-width:230px;text-align:center" placeholder="Mission passcode…" onkeydown="if(event.key==='Enter')revealScience()">
         <button class="btn btn-primary" onclick="revealScience()">🔓 Unlock the science</button>
@@ -941,6 +941,12 @@ function missionBody(m){
     ${field(m,'reasoning','textarea',{ph:'This evidence supports my claim because… The science behind this is…', nopaste:true})}
   </div>
 
+  <div class="step">
+    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Evidence Wall 🧱</h2></div>
+    <p class="hint">Time to publish! Fill in your group's Evidence Wall card using your claim and best evidence, then add it to the class wall. Tick the type(s) of evidence your card shows.</p>
+    ${checks(m,'wall',['Graph','Model','Photograph','Diagram','Observation','Data','Scientific explanation'])}
+  </div>
+
   ${scienceBlock(m, s++)}
 
   <div class="step">
@@ -962,12 +968,6 @@ function missionBody(m){
     ${field(m,'atsi1','textarea',{ph:'I think… because…'})}
     <div class="cer-label">${m.fnsQ2}</div>
     ${field(m,'atsi2','textarea',{ph:'My thinking is…'})}
-  </div>
-
-  <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>Mission Evidence Wall 🧱</h2></div>
-    <p class="hint">What evidence will your group add to the class Evidence Wall today? Tick all that apply, then write your evidence card.</p>
-    ${checks(m,'wall',['Graph','Model','Photograph','Diagram','Observation','Data','Scientific explanation'])}
   </div>
 
   <div class="step">
