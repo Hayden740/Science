@@ -968,38 +968,53 @@ function restoreQuiz(m){
   });
 }
 
-/* ---- Mini rocket blasts around then crashes into a poo ---- */
+/* ---- UFO flies around, lands on Earth, alien hops out and dances ---- */
 function launchRocket(){
-  const old = document.getElementById('pooRocket');
+  const old = document.getElementById('ufoShow');
   if(old) old.remove(); // opening another mission restarts the show
   const layer = document.createElement('div');
-  layer.id = 'pooRocket';
+  layer.id = 'ufoShow';
   layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';
   const W = window.innerWidth, H = window.innerHeight;
 
-  const poo = document.createElement('div');
-  poo.textContent = '💩';
-  const pooX = W*0.72, pooY = H*0.78;
-  poo.style.cssText = `position:absolute;left:${pooX}px;top:${pooY}px;font-size:44px;transform:translate(-50%,-50%);transition:transform .15s`;
-  layer.appendChild(poo);
+  const css = document.createElement('style');
+  css.textContent = `
+    @keyframes alienDance{
+      0%{transform:translate(-50%,-50%) rotate(-18deg) scale(1)}
+      25%{transform:translate(-50%,-58%) rotate(14deg) scale(1.15)}
+      50%{transform:translate(-50%,-50%) rotate(-14deg) scale(1)}
+      75%{transform:translate(-50%,-58%) rotate(18deg) scale(1.15)}
+      100%{transform:translate(-50%,-50%) rotate(-18deg) scale(1)}
+    }
+    @keyframes ufoBob{
+      0%,100%{margin-top:0}
+      50%{margin-top:-5px}
+    }`;
+  layer.appendChild(css);
 
-  const rocket = document.createElement('div');
-  rocket.textContent = '🚀';
-  rocket.style.cssText = 'position:absolute;font-size:38px;transform-origin:50% 50%;filter:drop-shadow(0 0 6px rgba(244,110,99,.6))';
-  layer.appendChild(rocket);
+  const earthX = W*0.72, earthY = H*0.78;
+  const earth = document.createElement('div');
+  earth.textContent = '🌍';
+  earth.style.cssText = `position:absolute;left:${earthX}px;top:${earthY}px;font-size:56px;transform:translate(-50%,-50%)`;
+  layer.appendChild(earth);
+
+  const ufo = document.createElement('div');
+  ufo.textContent = '🛸';
+  ufo.style.cssText = 'position:absolute;font-size:40px;transform-origin:50% 50%;filter:drop-shadow(0 0 8px rgba(122,198,152,.7))';
+  layer.appendChild(ufo);
   document.body.appendChild(layer);
 
-  // waypoints: swoop around the screen, then dive into the poo
+  // waypoints: swoop around the screen, then glide in to land on top of the Earth
+  const landX = earthX, landY = earthY - 44;
   const raw = [
     [-60, H*0.7], [W*0.25, H*0.2], [W*0.8, H*0.35],
     [W*0.35, H*0.6], [W*0.15, H*0.3], [W*0.6, H*0.12],
-    [pooX, pooY]
+    [landX, landY]
   ];
-  // duplicate endpoints for catmull-rom
   const pts = [raw[0], ...raw, raw[raw.length-1]];
   const DUR = 5000;
   const start = performance.now();
-  let ang = 0, lastPuff = 0;
+  let tilt = 0, lastPuff = 0;
 
   function cr(p0,p1,p2,p3,t){ // catmull-rom spline — smooth through every waypoint
     const t2=t*t, t3=t2*t;
@@ -1018,17 +1033,17 @@ function launchRocket(){
     let t = Math.min(1, (now-start)/DUR);
     t = t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; // one gentle ease over the whole flight
     const [x,y] = pos(t);
-    const target = Math.atan2(y-prev[1], x-prev[0])*180/Math.PI;
-    let d = target-ang; while(d>180)d-=360; while(d<-180)d+=360;
-    ang += d*0.15; // damped rotation — no snapping
-    rocket.style.left = x+'px';
-    rocket.style.top = y+'px';
-    rocket.style.transform = `translate(-50%,-50%) rotate(${ang+45}deg)`; // 🚀 points up-right by default
-    if(now-lastPuff > 90){ // steady puff trail
+    // UFOs stay flat — just bank a little into turns
+    const targetTilt = Math.max(-16, Math.min(16, (x-prev[0])*2));
+    tilt += (targetTilt-tilt)*0.1;
+    ufo.style.left = x+'px';
+    ufo.style.top = y+'px';
+    ufo.style.transform = `translate(-50%,-50%) rotate(${tilt}deg)`;
+    if(now-lastPuff > 100){ // sparkle trail
       lastPuff = now;
       const p = document.createElement('div');
-      p.textContent = Math.random()<.8?'·':'✦';
-      p.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${8+Math.random()*10}px;color:#F46E63;opacity:.8;transform:translate(-50%,-50%);transition:opacity .8s`;
+      p.textContent = Math.random()<.7?'·':'✦';
+      p.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${8+Math.random()*10}px;color:#7AC698;opacity:.8;transform:translate(-50%,-50%);transition:opacity .8s`;
       layer.appendChild(p);
       requestAnimationFrame(()=>p.style.opacity='0');
       setTimeout(()=>p.remove(), 850);
@@ -1036,24 +1051,47 @@ function launchRocket(){
     prev = [x,y];
     if(!layer.isConnected) return; // layer was replaced by a newer launch
     if(t<1){ requestAnimationFrame(tick); }
-    else crash();
+    else land(x,y);
   }
 
-  function crash(){
-    rocket.remove();
-    poo.style.transform = 'translate(-50%,-50%) scale(1.4) rotate(-12deg)';
-    const boom = document.createElement('div');
-    boom.textContent = '💥';
-    boom.style.cssText = `position:absolute;left:${pooX}px;top:${pooY}px;font-size:30px;transform:translate(-50%,-50%);transition:transform .35s,opacity .5s`;
-    layer.appendChild(boom);
-    requestAnimationFrame(()=>{ boom.style.transform='translate(-50%,-50%) scale(2.6)'; boom.style.opacity='0'; });
-    const splat = document.createElement('div');
-    splat.textContent = 'SPLAT!';
-    splat.style.cssText = `position:absolute;left:${pooX}px;top:${pooY-52}px;font-family:'Fredoka',sans-serif;font-weight:700;color:#F46E63;font-size:20px;transform:translate(-50%,-50%);opacity:0;transition:all .3s`;
-    layer.appendChild(splat);
-    setTimeout(()=>{ splat.style.opacity='1'; splat.style.top=(pooY-70)+'px'; }, 120);
-    setTimeout(()=>{ layer.style.transition='opacity .5s'; layer.style.opacity='0'; }, 1500);
-    setTimeout(()=>layer.remove(), 2100);
+  function land(x,y){
+    ufo.style.transform = 'translate(-50%,-50%) rotate(0deg)';
+    ufo.style.animation = 'ufoBob 1.2s ease-in-out infinite';
+    // little touchdown puff
+    const puff = document.createElement('div');
+    puff.textContent = '💨';
+    puff.style.cssText = `position:absolute;left:${x}px;top:${y+18}px;font-size:22px;transform:translate(-50%,-50%);transition:opacity .8s,transform .8s`;
+    layer.appendChild(puff);
+    requestAnimationFrame(()=>{ puff.style.opacity='0'; puff.style.transform='translate(-50%,-50%) scale(1.8)'; });
+    setTimeout(()=>puff.remove(), 850);
+
+    // alien hops out and dances
+    setTimeout(()=>{
+      if(!layer.isConnected) return;
+      const alien = document.createElement('div');
+      alien.textContent = '👽';
+      alien.style.cssText = `position:absolute;left:${x-34}px;top:${y+6}px;font-size:26px;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s`;
+      layer.appendChild(alien);
+      requestAnimationFrame(()=>alien.style.opacity='1');
+      setTimeout(()=>{ alien.style.animation = 'alienDance .5s ease-in-out 5'; }, 350);
+
+      const notes = ['🎵','🎶','🎵'];
+      notes.forEach((n,i)=>{
+        setTimeout(()=>{
+          if(!layer.isConnected) return;
+          const note = document.createElement('div');
+          note.textContent = n;
+          note.style.cssText = `position:absolute;left:${x-34+(i-1)*22}px;top:${y-20}px;font-size:16px;transform:translate(-50%,-50%);opacity:0;transition:all 1s`;
+          layer.appendChild(note);
+          requestAnimationFrame(()=>{ note.style.opacity='1'; note.style.top=(y-46)+'px'; });
+          setTimeout(()=>{ note.style.opacity='0'; }, 900);
+          setTimeout(()=>note.remove(), 1500);
+        }, 500 + i*550);
+      });
+    }, 600);
+
+    setTimeout(()=>{ layer.style.transition='opacity .6s'; layer.style.opacity='0'; }, 4400);
+    setTimeout(()=>layer.remove(), 5100);
   }
 
   requestAnimationFrame(tick);
