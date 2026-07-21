@@ -996,18 +996,9 @@ function missionBody(m){
 
   <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Time to Investigate! 🔬</h2></div>
-    <p class="hint">Prediction locked in? Then your mission is GO. Here's your briefing:</p>
-    <div class="spotlight" style="margin-bottom:16px">
-      <b>🚀 Mission briefing:</b>
-      <span style="display:block;margin-top:6px">1️⃣ Listen to your teacher's instructions for today's mission.<br>
-      2️⃣ Explore the approved resources — websites, videos and books — with your group.<br>
-      3️⃣ Hunt for evidence: facts, diagrams and explanations that help answer the mission question.<br>
-      4️⃣ As you go, capture your <b>three strongest pieces of evidence</b> below — in your own words, not copied.</span>
-    </div>
+    <p class="hint">Find your evidence! Explore the resources and record the facts, diagrams and explanations that help answer the mission question — in your own words, not copied.</p>
     <div class="cer-label">Evidence collected 🔍</div>
-    <div class="ev-row"><span class="n">1.</span>${field(m,'ev1','input',{ph:'First piece of evidence…'})}</div>
-    <div class="ev-row"><span class="n">2.</span>${field(m,'ev2','input',{ph:'Second piece of evidence…'})}</div>
-    <div class="ev-row"><span class="n">3.</span>${field(m,'ev3','input',{ph:'Third piece of evidence…'})}</div>
+    ${field(m,'ev1','textarea',{ph:'My evidence is…', tall:true})}
 
     <div class="cer-label" style="margin-top:18px">My evidence image 📸</div>
     <p class="hint">Add one photo of your evidence — a diagram you drew, your model, an experiment, or your notes.</p>
@@ -1017,14 +1008,6 @@ function missionBody(m){
     <div class="cer-label" style="margin-top:18px">My evidence video 🎥</div>
     <p class="hint">Found a video that shows or explains your evidence? Paste the link here, with a few words about what it shows.</p>
     <div class="ev-row"><span class="n">▶</span>${field(m,'vid','input',{ph:'Paste video link — and what does it show?'})}</div>
-  </div>
-
-  <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>My Research Links 🔗</h2></div>
-    <p class="hint">Found a video or website that helps explain the idea? Paste the links here so you (and your teacher) can find them again. Add a few words about what each one explains.</p>
-    <div class="ev-row"><span class="n">1.</span>${field(m,'link1','input',{ph:'Paste link — and what does it explain?'})}</div>
-    <div class="ev-row"><span class="n">2.</span>${field(m,'link2','input',{ph:'Paste link — and what does it explain?'})}</div>
-    <div class="ev-row"><span class="n">3.</span>${field(m,'link3','input',{ph:'Paste link — and what does it explain?'})}</div>
   </div>
 
   <div class="step">
@@ -1195,10 +1178,9 @@ $('downloadBtn').onclick = ()=>{
       F(m.id,'tc3','The strongest evidence that changed my thinking');
     } else {
       F(m.id,'before','Before We Investigate (prediction)');
-      F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
+      F(m.id,'ev1','Evidence collected');
       L.push('\nEvidence image: '+(read(`m${m.id}_img`)?'(image saved in passbook on this device)':'(no image added)'));
       F(m.id,'vid','Evidence video link');
-      F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
       F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
       F(m.id,'atsi1','First Nations Science — question 1');
       F(m.id,'atsi2','How this is similar to today\'s investigation');
@@ -1226,14 +1208,11 @@ function downloadMissionDoc(){
   let body = '';
   if(!m.final){
     body += sec('Before We Investigate', 'My prediction, written before the mission began.', A('before'));
-    body += sec('Evidence Collected', 'The three strongest pieces of evidence I found while investigating.',
-      `<ol><li>${A('ev1')}</li><li>${A('ev2')}</li><li>${A('ev3')}</li></ol>`);
+    body += sec('Evidence Collected', 'The evidence I found while investigating.', A('ev1'));
     const evImg = read(`m${m.id}_img`);
     body += sec('My Evidence Image', 'A photo of my evidence.',
       evImg ? `<img src="${evImg}" style="max-width:100%" alt="Evidence image">` : '<span class="blank">(no image added)</span>');
     body += sec('My Evidence Video', 'A video that shows or explains my evidence.', A('vid'));
-    body += sec('My Research Links', 'Videos and websites I used during my research.',
-      `<ol><li>${A('link1')}</li><li>${A('link2')}</li><li>${A('link3')}</li></ol>`);
     body += sec('Open-Mindedness: At First I Thought\u2026', 'My thinking at the start.', A('om1'));
     body += sec('Open-Mindedness: The Science Reading Showed\u2026', 'What the science said, compared with my claim.', A('om2'));
     body += sec('Open-Mindedness: Now I Think\u2026', 'My thinking after comparing my claim with the science.', A('om3'));
