@@ -970,7 +970,8 @@ function restoreQuiz(m){
 
 /* ---- Mini rocket blasts around then crashes into a poo ---- */
 function launchRocket(){
-  if(document.getElementById('pooRocket')) return; // one at a time
+  const old = document.getElementById('pooRocket');
+  if(old) old.remove(); // opening another mission restarts the show
   const layer = document.createElement('div');
   layer.id = 'pooRocket';
   layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';
@@ -989,40 +990,51 @@ function launchRocket(){
   document.body.appendChild(layer);
 
   // waypoints: swoop around the screen, then dive into the poo
-  const pts = [
+  const raw = [
     [-60, H*0.7], [W*0.25, H*0.2], [W*0.8, H*0.35],
     [W*0.35, H*0.6], [W*0.15, H*0.3], [W*0.6, H*0.12],
     [pooX, pooY]
   ];
-  const DUR = 2600;
+  // duplicate endpoints for catmull-rom
+  const pts = [raw[0], ...raw, raw[raw.length-1]];
+  const DUR = 5000;
   const start = performance.now();
-  let prev = pts[0];
+  let ang = 0, lastPuff = 0;
 
-  function pos(t){ // catmull-rom-ish: simple segment lerp with easing
-    const seg = Math.min(pts.length-2, Math.floor(t*(pts.length-1)));
-    const lt = t*(pts.length-1) - seg;
-    const e = lt<.5 ? 2*lt*lt : 1-Math.pow(-2*lt+2,2)/2;
-    const [x1,y1]=pts[seg], [x2,y2]=pts[seg+1];
-    return [x1+(x2-x1)*e, y1+(y2-y1)*e];
+  function cr(p0,p1,p2,p3,t){ // catmull-rom spline — smooth through every waypoint
+    const t2=t*t, t3=t2*t;
+    return 0.5*((2*p1)+(-p0+p2)*t+(2*p0-5*p1+4*p2-p3)*t2+(-p0+3*p1-3*p2+p3)*t3);
+  }
+  function pos(t){
+    const n = raw.length-1;
+    const seg = Math.min(n-1, Math.floor(t*n));
+    const lt = t*n - seg;
+    const p0=pts[seg], p1=pts[seg+1], p2=pts[seg+2], p3=pts[seg+3];
+    return [cr(p0[0],p1[0],p2[0],p3[0],lt), cr(p0[1],p1[1],p2[1],p3[1],lt)];
   }
 
+  let prev = pos(0);
   function tick(now){
-    const t = Math.min(1, (now-start)/DUR);
+    let t = Math.min(1, (now-start)/DUR);
+    t = t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; // one gentle ease over the whole flight
     const [x,y] = pos(t);
-    const ang = Math.atan2(y-prev[1], x-prev[0])*180/Math.PI;
+    const target = Math.atan2(y-prev[1], x-prev[0])*180/Math.PI;
+    let d = target-ang; while(d>180)d-=360; while(d<-180)d+=360;
+    ang += d*0.15; // damped rotation — no snapping
     rocket.style.left = x+'px';
     rocket.style.top = y+'px';
     rocket.style.transform = `translate(-50%,-50%) rotate(${ang+45}deg)`; // 🚀 points up-right by default
-    // puff trail
-    if(Math.random()<.4){
+    if(now-lastPuff > 90){ // steady puff trail
+      lastPuff = now;
       const p = document.createElement('div');
       p.textContent = Math.random()<.8?'·':'✦';
-      p.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${8+Math.random()*10}px;color:#F46E63;opacity:.8;transform:translate(-50%,-50%);transition:opacity .6s`;
+      p.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${8+Math.random()*10}px;color:#F46E63;opacity:.8;transform:translate(-50%,-50%);transition:opacity .8s`;
       layer.appendChild(p);
       requestAnimationFrame(()=>p.style.opacity='0');
-      setTimeout(()=>p.remove(), 650);
+      setTimeout(()=>p.remove(), 850);
     }
     prev = [x,y];
+    if(!layer.isConnected) return; // layer was replaced by a newer launch
     if(t<1){ requestAnimationFrame(tick); }
     else crash();
   }
