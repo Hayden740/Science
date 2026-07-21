@@ -968,6 +968,85 @@ function restoreQuiz(m){
   });
 }
 
+/* ---- Mini rocket blasts around then crashes into a poo ---- */
+function launchRocket(){
+  if(document.getElementById('pooRocket')) return; // one at a time
+  const layer = document.createElement('div');
+  layer.id = 'pooRocket';
+  layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';
+  const W = window.innerWidth, H = window.innerHeight;
+
+  const poo = document.createElement('div');
+  poo.textContent = '💩';
+  const pooX = W*0.72, pooY = H*0.78;
+  poo.style.cssText = `position:absolute;left:${pooX}px;top:${pooY}px;font-size:44px;transform:translate(-50%,-50%);transition:transform .15s`;
+  layer.appendChild(poo);
+
+  const rocket = document.createElement('div');
+  rocket.textContent = '🚀';
+  rocket.style.cssText = 'position:absolute;font-size:38px;transform-origin:50% 50%;filter:drop-shadow(0 0 6px rgba(244,110,99,.6))';
+  layer.appendChild(rocket);
+  document.body.appendChild(layer);
+
+  // waypoints: swoop around the screen, then dive into the poo
+  const pts = [
+    [-60, H*0.7], [W*0.25, H*0.2], [W*0.8, H*0.35],
+    [W*0.35, H*0.6], [W*0.15, H*0.3], [W*0.6, H*0.12],
+    [pooX, pooY]
+  ];
+  const DUR = 2600;
+  const start = performance.now();
+  let prev = pts[0];
+
+  function pos(t){ // catmull-rom-ish: simple segment lerp with easing
+    const seg = Math.min(pts.length-2, Math.floor(t*(pts.length-1)));
+    const lt = t*(pts.length-1) - seg;
+    const e = lt<.5 ? 2*lt*lt : 1-Math.pow(-2*lt+2,2)/2;
+    const [x1,y1]=pts[seg], [x2,y2]=pts[seg+1];
+    return [x1+(x2-x1)*e, y1+(y2-y1)*e];
+  }
+
+  function tick(now){
+    const t = Math.min(1, (now-start)/DUR);
+    const [x,y] = pos(t);
+    const ang = Math.atan2(y-prev[1], x-prev[0])*180/Math.PI;
+    rocket.style.left = x+'px';
+    rocket.style.top = y+'px';
+    rocket.style.transform = `translate(-50%,-50%) rotate(${ang+45}deg)`; // 🚀 points up-right by default
+    // puff trail
+    if(Math.random()<.4){
+      const p = document.createElement('div');
+      p.textContent = Math.random()<.8?'·':'✦';
+      p.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-size:${8+Math.random()*10}px;color:#F46E63;opacity:.8;transform:translate(-50%,-50%);transition:opacity .6s`;
+      layer.appendChild(p);
+      requestAnimationFrame(()=>p.style.opacity='0');
+      setTimeout(()=>p.remove(), 650);
+    }
+    prev = [x,y];
+    if(t<1){ requestAnimationFrame(tick); }
+    else crash();
+  }
+
+  function crash(){
+    rocket.remove();
+    poo.style.transform = 'translate(-50%,-50%) scale(1.4) rotate(-12deg)';
+    const boom = document.createElement('div');
+    boom.textContent = '💥';
+    boom.style.cssText = `position:absolute;left:${pooX}px;top:${pooY}px;font-size:30px;transform:translate(-50%,-50%);transition:transform .35s,opacity .5s`;
+    layer.appendChild(boom);
+    requestAnimationFrame(()=>{ boom.style.transform='translate(-50%,-50%) scale(2.6)'; boom.style.opacity='0'; });
+    const splat = document.createElement('div');
+    splat.textContent = 'SPLAT!';
+    splat.style.cssText = `position:absolute;left:${pooX}px;top:${pooY-52}px;font-family:'Fredoka',sans-serif;font-weight:700;color:#F46E63;font-size:20px;transform:translate(-50%,-50%);opacity:0;transition:all .3s`;
+    layer.appendChild(splat);
+    setTimeout(()=>{ splat.style.opacity='1'; splat.style.top=(pooY-70)+'px'; }, 120);
+    setTimeout(()=>{ layer.style.transition='opacity .5s'; layer.style.opacity='0'; }, 1500);
+    setTimeout(()=>layer.remove(), 2100);
+  }
+
+  requestAnimationFrame(tick);
+}
+
 function openMission(id){
   current = MISSIONS.find(m=>m.id===id);
   const m = current;
@@ -983,6 +1062,7 @@ function openMission(id){
   $('homeView').style.display='none';
   $('missionView').style.display='block';
   window.scrollTo({top:0});
+  launchRocket();
 }
 
 function missionBody(m){
