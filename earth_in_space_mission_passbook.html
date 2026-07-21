@@ -216,6 +216,10 @@ textarea{min-height:96px}
 textarea.tall{min-height:130px}
 .ev-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
 .ev-row .n{font-family:'Fredoka';font-weight:700;color:var(--macc);font-size:1.1rem;min-width:22px;padding-top:10px}
+.evimg-box{border:2px dashed var(--macc);border-radius:14px;padding:16px;text-align:center;background:#fff}
+.evimg-box.empty{padding:26px 16px}
+.evimg-box img{max-width:100%;max-height:340px;border-radius:10px;display:block;margin:0 auto 12px}
+.evimg-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .choices{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .choice{position:relative}
 .choice input{position:absolute;opacity:0;pointer-events:none}
@@ -825,6 +829,63 @@ function checks(m, name, options){
     </span>`).join('')+`</div>`;
 }
 
+/* ---- Evidence image (stored compressed in localStorage) ---- */
+function evImageBlock(m){
+  const img = read(`m${m.id}_img`);
+  if(img){
+    return `
+      <div class="evimg-box">
+        <img src="${img}" alt="My evidence image">
+        <div class="evimg-btns">
+          <button class="btn btn-lime" onclick="$('evImgFile').click()">🔄 Replace image</button>
+          <button class="btn" style="background:var(--coral);color:#fff" onclick="removeEvImage()">🗑️ Remove</button>
+        </div>
+      </div>`;
+  }
+  return `
+    <div class="evimg-box empty">
+      <button class="btn btn-primary" onclick="$('evImgFile').click()">📸 Upload a photo</button>
+    </div>`;
+}
+
+function saveEvImage(inp){
+  const file = inp.files && inp.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const im = new Image();
+    im.onload = () => {
+      const MAX = 900;
+      let w = im.width, h = im.height;
+      if(w > MAX || h > MAX){
+        const r = Math.min(MAX/w, MAX/h);
+        w = Math.round(w*r); h = Math.round(h*r);
+      }
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(im, 0, 0, w, h);
+      const data = c.toDataURL('image/jpeg', 0.72);
+      try {
+        store(`m${current.id}_img`, data);
+        $('evImgWrap').innerHTML = evImageBlock(current);
+        flashSaved();
+      } catch(err){
+        alert('That image is too large to save on this device — try a smaller photo.');
+      }
+      inp.value = '';
+    };
+    im.onerror = () => { alert('That file doesn\u2019t look like an image — try again.'); inp.value=''; };
+    im.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeEvImage(){
+  store(`m${current.id}_img`, '');
+  $('evImgWrap').innerHTML = evImageBlock(current);
+  flashSaved();
+}
+
 const PASS = {1:'gravity', 2:'rotation', 3:'seasons', 4:'moon', 5:'tides', 6:'earth'};
 
 function scienceBlock(m, stepNum){
@@ -832,7 +893,7 @@ function scienceBlock(m, stepNum){
   const inner = revealed ? scienceContent(m) : `
     <div class="locked-science">
       <div class="lock">🔒</div>
-      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence, make your CER claim and finish your group&#8217;s Evidence Wall card first. When your card is on the wall, ask your teacher for today&#8217;s <b>mission passcode</b>.</p>
+      <p><b>Hold on, scientist!</b> Write your prediction, gather your evidence and finish your group&#8217;s Evidence Wall card first. When your card is on the wall, ask your teacher for today&#8217;s <b>mission passcode</b>.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
         <input class="line" id="passInput" style="max-width:230px;text-align:center" placeholder="Mission passcode…" onkeydown="if(event.key==='Enter')revealScience()">
         <button class="btn btn-primary" onclick="revealScience()">🔓 Unlock the science</button>
@@ -849,7 +910,7 @@ function scienceBlock(m, stepNum){
 
 function scienceContent(m){
   return `
-    <p class="hint" style="margin-bottom:10px">🕵️ As you read, compare each idea with your CER claim. Where do they match? Where do they differ?</p>
+    <p class="hint" style="margin-bottom:10px">🕵️ As you read, compare each idea with the evidence you collected. Where do they match? Where do they differ?</p>
     <div class="keywords">${m.keywords.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
     <div class="reading">${m.reading.map(p=>`<p>${p}</p>`).join('')}</div>
     ${m.final?'<div class="diagram"><img src="images/blue_marble_apollo17.jpg" alt="Earth photographed from space: a full blue disc of ocean, cloud, Africa and Antarctica against black space" style="width:100%;max-width:440px;border-radius:12px"><div class="cap">&ldquo;The Blue Marble&rdquo; &mdash; Earth photographed by the Apollo 17 astronauts, 1972. Every system you investigated is at work in this one photo. (NASA, public domain)</div></div>':''}
@@ -947,6 +1008,15 @@ function missionBody(m){
     <div class="ev-row"><span class="n">1.</span>${field(m,'ev1','input',{ph:'First piece of evidence…'})}</div>
     <div class="ev-row"><span class="n">2.</span>${field(m,'ev2','input',{ph:'Second piece of evidence…'})}</div>
     <div class="ev-row"><span class="n">3.</span>${field(m,'ev3','input',{ph:'Third piece of evidence…'})}</div>
+
+    <div class="cer-label" style="margin-top:18px">My evidence image 📸</div>
+    <p class="hint">Add one photo of your evidence — a diagram you drew, your model, an experiment, or your notes.</p>
+    <input type="file" id="evImgFile" accept="image/*" style="display:none" onchange="saveEvImage(this)">
+    <div id="evImgWrap">${evImageBlock(m)}</div>
+
+    <div class="cer-label" style="margin-top:18px">My evidence video 🎥</div>
+    <p class="hint">Found a video that shows or explains your evidence? Paste the link here, with a few words about what it shows.</p>
+    <div class="ev-row"><span class="n">▶</span>${field(m,'vid','input',{ph:'Paste video link — and what does it show?'})}</div>
   </div>
 
   <div class="step">
@@ -958,31 +1028,8 @@ function missionBody(m){
   </div>
 
   <div class="step">
-    <div class="step-head"><div class="snum">${s++}</div><h2>Think Like a Scientist 🧪</h2></div>
-    <p class="hint">You've predicted, investigated and gathered evidence — now it's time to commit to an answer. Which explanation does YOUR evidence best support?</p>
-    ${radio(m,'tls',['My original idea',"My partner's idea",'A new explanation'])}
-
-    <div class="spotlight" style="margin-top:20px">
-      <b>✍️ Your turn to write it up — in your OWN words.</b>
-      <span style="display:block;margin-top:6px">A scientific answer has three parts that fit together: <b>C</b>laim → <b>E</b>vidence → <b>R</b>easoning. Here's what a CER looks like for a totally different question — <i>"Why is the school oval muddy this morning?"</i></span>
-      <span style="display:block;margin-top:8px">
-      <b>CLAIM:</b> I claim it rained overnight.<br>
-      <b>EVIDENCE:</b> The oval is muddy, there are puddles on the courts, and the seats are wet.<br>
-      <b>REASONING:</b> Rain leaves water behind on surfaces. Puddles, mud and wet seats all show water fell from above recently, so rain is the best explanation for what I observed.</span>
-      <span style="display:block;margin-top:8px">Now do the same for YOUR mission question. Pasting is switched off in these boxes — the words come from your brain, not your clipboard! 🧠</span>
-    </div>
-
-    <div class="cer-label"><span>CLAIM</span> — One clear sentence that answers the mission question. (No "because" yet — that comes later!)</div>
-    ${field(m,'claim','textarea',{ph:'I claim that…', nopaste:true})}
-    <div class="cer-label"><span>EVIDENCE</span> — The facts: what did you actually see, measure or find in your investigation? Use your three pieces of evidence from above.</div>
-    ${field(m,'evidence','textarea',{ph:'My evidence is… First,… Second,… Third,…', nopaste:true})}
-    <div class="cer-label"><span>REASONING</span> — The science: HOW does your evidence prove your claim? Connect them using a science idea you found in your research.</div>
-    ${field(m,'reasoning','textarea',{ph:'This evidence supports my claim because… The science behind this is…', nopaste:true})}
-  </div>
-
-  <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Mission Evidence Wall 🧱</h2></div>
-    <p class="hint">Time to publish! Fill in your group's Evidence Wall card using your claim and best evidence, then add it to the class wall. Tick the type(s) of evidence your card shows.</p>
+    <p class="hint">Time to publish! Fill in your group's Evidence Wall card using your best evidence, then add it to the class wall. Tick the type(s) of evidence your card shows.</p>
     ${checks(m,'wall',['Graph','Model','Photograph','Diagram','Observation','Data','Scientific explanation'])}
   </div>
 
@@ -990,7 +1037,7 @@ function missionBody(m){
 
   <div class="step">
     <div class="step-head"><div class="snum">${s++}</div><h2>Open-mindedness Checkpoint 💡</h2></div>
-    <p class="hint">Scientists change their thinking when evidence provides a better explanation. Compare your CER claim with the science reading — did your claim hold up? It's a win either way: being right feels good, and changing your mind for good reasons is real science.</p>
+    <p class="hint">Scientists change their thinking when evidence provides a better explanation. Compare your prediction and evidence with the science reading — did your thinking hold up? It's a win either way: being right feels good, and changing your mind for good reasons is real science.</p>
     <div class="cer-label">At first I thought…</div>
     ${field(m,'om1','textarea',{ph:'At first I thought…'})}
     <div class="cer-label">The science reading showed…</div>
@@ -1149,9 +1196,9 @@ $('downloadBtn').onclick = ()=>{
     } else {
       F(m.id,'before','Before We Investigate (prediction)');
       F(m.id,'ev1','Evidence 1'); F(m.id,'ev2','Evidence 2'); F(m.id,'ev3','Evidence 3');
+      L.push('\nEvidence image: '+(read(`m${m.id}_img`)?'(image saved in passbook on this device)':'(no image added)'));
+      F(m.id,'vid','Evidence video link');
       F(m.id,'link1','Research link 1'); F(m.id,'link2','Research link 2'); F(m.id,'link3','Research link 3');
-      L.push('\nBest-supported explanation: '+(read(`m${m.id}_tls`)||'(not selected)'));
-      F(m.id,'claim','CLAIM (own words — paste disabled)'); F(m.id,'evidence','EVIDENCE'); F(m.id,'reasoning','REASONING');
       F(m.id,'om1','At first I thought'); F(m.id,'om2','The investigation showed'); F(m.id,'om3','Now I think');
       F(m.id,'atsi1','First Nations Science — question 1');
       F(m.id,'atsi2','How this is similar to today\'s investigation');
@@ -1181,13 +1228,12 @@ function downloadMissionDoc(){
     body += sec('Before We Investigate', 'My prediction, written before the mission began.', A('before'));
     body += sec('Evidence Collected', 'The three strongest pieces of evidence I found while investigating.',
       `<ol><li>${A('ev1')}</li><li>${A('ev2')}</li><li>${A('ev3')}</li></ol>`);
+    const evImg = read(`m${m.id}_img`);
+    body += sec('My Evidence Image', 'A photo of my evidence.',
+      evImg ? `<img src="${evImg}" style="max-width:100%" alt="Evidence image">` : '<span class="blank">(no image added)</span>');
+    body += sec('My Evidence Video', 'A video that shows or explains my evidence.', A('vid'));
     body += sec('My Research Links', 'Videos and websites I used during my research.',
       `<ol><li>${A('link1')}</li><li>${A('link2')}</li><li>${A('link3')}</li></ol>`);
-    body += sec('Best-Supported Explanation', 'The explanation my evidence best supports.',
-      w(read(`m${m.id}_tls`)) || '<span class="blank">(not selected)</span>');
-    body += sec('Claim', 'My one-sentence answer to the mission question.', A('claim'));
-    body += sec('Evidence', 'The facts from my investigation that support my claim.', A('evidence'));
-    body += sec('Reasoning', 'The science that connects my evidence to my claim.', A('reasoning'));
     body += sec('Open-Mindedness: At First I Thought\u2026', 'My thinking at the start.', A('om1'));
     body += sec('Open-Mindedness: The Science Reading Showed\u2026', 'What the science said, compared with my claim.', A('om2'));
     body += sec('Open-Mindedness: Now I Think\u2026', 'My thinking after comparing my claim with the science.', A('om3'));
